@@ -1,0 +1,50 @@
+<header class="admin__header" <% if(_currentURL == '/administration') {%> style="justify-content: right;" <%}%>>
+    <% if(_currentURL.includes('patient')) {%> 
+        <form class="admin__header-search" action="/administration/patient/search" method="GET">
+            <input name="keyword" type="text" class="admin__header-input" placeholder="Search...">
+            <button type="submit" class="admin__header-search-btn">
+                <i class='bx bx-search'></i>
+            </button>
+        </form>
+    <%}%>
+    <% if(_currentURL.includes('employee')) {%> 
+        <form class="admin__header-search" action="/administration/employee/search" method="GET">
+            <input name="keyword" type="text" class="admin__header-input" placeholder="Search...">
+            <button type="submit" class="admin__header-search-btn">
+                <i class='bx bx-search'></i>
+            </button>
+        </form>
+    <%}%>
+    <div class="admin__header-user">
+        <p class="admin__header-name">Hello, <%= _session.user.fullname %></p>
+        <div class="admin__header-img">
+            <img src="<%= _session.user.image %>" alt="">
+        </div>
+        <ul class="admin__header-list">
+            <li class="admin__header-item">
+                <a href="/administration/myaccount" class="admin__header-link">
+                    <i class='bx bx-user'></i>
+                    My account
+                </a>
+            </li>
+            <li class="admin__header-item">
+                <a href="" class="admin__header-link mode-btn">
+                    <i class='bx bx-sun'></i>
+                    Screen mode
+                </a>
+            </li>
+            <li class="admin__header-item">
+                <a href="" class="admin__header-link">
+                    <i class='bx bx-cog'></i>
+                    Setting
+                </a>
+            </li>
+            <li class="admin__header-item">
+                <a href="/administration/myaccount/logout" class="admin__header-link">
+                    <i class='bx bx-log-out' ></i>
+                    Log out
+                </a>
+            </li>
+        </ul>
+    </div>
+</header>

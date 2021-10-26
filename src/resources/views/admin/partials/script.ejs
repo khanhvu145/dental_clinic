@@ -1,0 +1,67 @@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+<script>
+    //Xử lý back trang
+    function back() {
+        history.back();
+    }
+    const btnBack = document.querySelector('.btn-back');
+    btnBack.onclick = function(e) {
+        e.preventDefault();
+        back();
+    }
+
+    //Xử lý chọn ảnh
+    const UPLOAD_BUTTON = document.querySelector(".profile__main-avatar");
+    const FILE_INPUT = document.querySelector(".upload__file-img");
+    const AVATAR = document.querySelector(".profile__main-img");
+    UPLOAD_BUTTON.addEventListener("click", () => FILE_INPUT.click());
+    FILE_INPUT.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            AVATAR.setAttribute("src", reader.result);
+        };
+    });
+</script>
+<script>
+    //Dark-light mode
+    const modeBtn = document.querySelector('.mode-btn');
+    const modeBtn_icon = document.querySelector(".mode-btn > i");
+    const currentTheme = localStorage.getItem('theme');
+    if(currentTheme){
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        if(currentTheme == 'dark'){
+            modeBtn_icon.classList.remove("bx-sun");
+            modeBtn_icon.classList.add("bx-moon");
+        }
+        else{
+            modeBtn_icon.classList.add("bx-sun");
+            modeBtn_icon.classList.remove("bx-moon");
+        }
+    }
+
+    function switchTheme(e){
+        if(modeBtn_icon.classList.contains('bx-moon')){
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+        else{
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    modeBtn.onclick = function(e) {
+        e.preventDefault();
+        if(modeBtn_icon.classList.contains('bx-sun')){
+            modeBtn_icon.classList.remove("bx-sun");
+            modeBtn_icon.classList.add("bx-moon");
+        }
+        else{
+            modeBtn_icon.classList.add("bx-sun");
+            modeBtn_icon.classList.remove("bx-moon");
+        }
+        switchTheme();
+    }
+</script>

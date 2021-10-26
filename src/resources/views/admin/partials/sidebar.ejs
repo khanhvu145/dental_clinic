@@ -1,0 +1,27 @@
+<div class="admin__sidebar">
+    <div class="admin__logo">
+        <div class="admin__img">
+            <img src="/img/logoclinic.png" alt="">
+        </div>
+    </div>
+    <ul class="admin__list">
+        <li>
+            <a href="/administration" class="admin__link <%if (_currentURL == '/administration') { %> active <% } %>">
+                <i class='bx bx-grid-alt'></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="/administration/employee" class="admin__link <%if (_currentURL.includes('employee')) { %> active <% } %>">
+                <i class='bx bx-face'></i>
+                <span>Employee</span>
+            </a>
+        </li>
+        <li>
+            <a href="/administration/patient" class="admin__link <%if (_currentURL.includes('patient')) { %> active <% } %>">
+                <i class='bx bxs-face' ></i>
+                <span>Patient</span>
+            </a>
+        </li>
+    </ul>
+</div>

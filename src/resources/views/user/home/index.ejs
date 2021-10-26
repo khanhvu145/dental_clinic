@@ -1,0 +1,147 @@
+<div class="wrapper">
+    <div class="tabs">
+        <ul>
+            <li class="active">
+                <span class="icon"></span>
+                <span class="text">Thông tin bệnh nhân</span>
+            </li>
+
+            <li>
+                <span class="icon"></span>
+                <span class="text">Đăng ký khám</span>
+            </li>
+
+            <li>
+                <span class="icon"></span>
+                <span class="text">Danh sách đăng ký khám</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="tab-wrap" style="display: block;">
+            <div class="tab__header">
+                <div class="title">
+                    Thông tin bệnh nhân
+                </div>
+                <div class="tab__header-control">
+                    <button class="control-btn select-btn">
+                        <i class='bx bx-search'></i>
+                        <span>Chọn</span>
+                    </button>
+                    <button class="control-btn create-btn">
+                        <i class='bx bxs-user-plus'></i>
+                        <span>Thêm</span>
+                    </button>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="avatar">
+                    <div class="avatar__content">
+                        <img src="/img/user.png" alt="" class="avatar__content-img">
+                    </div>
+                    <button class="avatar__btn">
+                        <i class='bx bxs-camera-plus'></i>
+                        <span>Thêm ảnh</span>
+                    </button>
+                </div>
+                <input type="file" class="upload__file-img" id="image" name="image">
+                <div class="information">
+                    <div class="information__item">
+                        <label for="id" class="information__item-label">Mã hồ sơ</label>
+                        <input type="text" class="information__item-input" id="id" name="id" value="" disabled placeholder="Mã hồ sơ">
+                    </div>
+                    <div class="information__item">
+                        <label for="fullname" class="information__item-label">Họ và tên</label>
+                        <input type="text" class="information__item-input" id="fullname" name="fullname" value="" placeholder="Họ và tên" required>
+                    </div>
+                    <div class="information__item">
+                        <label for="dateofbirth" class="information__item-label">Ngày sinh</label>
+                        <input type="date" class="information__item-input" id="dateofbirth" name="dateofbirth" value="" placeholder="Ngày sinh" required>
+                    </div>
+                    <div class="information__item">
+                        <label for="gender" class="information__item-label">Giới tính</label>
+                        <select id="gender" name="gender" class="information__item-input" required>
+                            <option value="">-- Chọn giới tính --</option>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                    <div class="information__item">
+                        <label for="phone" class="information__item-label">Số điện thoại</label>
+                        <input type="phone" class="information__item-input" id="phone" name="phone" value="" placeholder="Số điện thoại" required>
+                    </div>
+                    <div class="information__item">
+                        <label for="email" class="information__item-label">Email</label>
+                        <input type="email" class="information__item-input" id="email" name="email" value="" placeholder="Email" required>
+                    </div>
+                    <div class="information__item">
+                        <label for="address" class="information__item-label">Địa chỉ</label>
+                        <input type="address" class="information__item-input" id="address" name="address" value="" placeholder="Địa chỉ" required>
+                    </div>
+                    <div class="information__item">
+                        <label for="allergy" class="information__item-label">Dị ứng</label>
+                        <div class="allergy__group">
+                            <div class="allergy__item">
+                                <input type="checkbox" id="box-1" class="allergy__item-input">
+                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
+                            </div>
+                            <div class="allergy__item">
+                                <input type="checkbox" id="box-1" class="allergy__item-input">
+                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
+                            </div>
+                            <div class="allergy__item">
+                                <input type="checkbox" id="box-1" class="allergy__item-input">
+                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
+                            </div>
+                            <div class="allergy__item">
+                                <input type="checkbox" id="box-1" class="allergy__item-input">
+                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="information__item">
+                        <label for="symptom" class="information__item-label">Triệu chứng</label>
+                        <textarea name="symptom" id="symptom" cols="30" rows="10" placeholder="Nhập..."></textarea>
+                    </div>
+                    <div class="information__item">
+                        <label for="background-disease" class="information__item-label">Bệnh nền</label>
+                        <textarea name="background-disease" id="background-disease" cols="30" rows="10" placeholder="Nhập..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="tab__control">
+                <button class="control-btn update-btn">
+                    <i class='bx bxs-save' ></i>
+                    <span>Cập nhật</span>
+                </button>
+                <button class="control-btn print-btn">
+                    <i class='bx bxs-printer' ></i>
+                    <span>In phiếu</span>
+                </button>
+                <button class="control-btn close-btn">
+                    <i class='bx bx-x'></i>
+                    <span>Đóng</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-wrap" style="display: none;">
+            <div class="title">
+                Đăng ký khám
+            </div>
+            <div class="tab-content">
+            </div>
+        </div>
+
+        <div class="tab-wrap" style="display: none;">
+            <div class="title">
+                Danh sách đăng ký khám
+            </div>
+            <div class="tab-content">
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,64 @@
+<main class="admin__main">
+    <div class="admin__main-heading">
+        <p> <span onclick="back()" style="cursor: pointer; text-decoration: underline;">Patients</span> / Edit / <%= patient.fullname%></p>
+        <a href="" class="admin__main-btn admin__main-create btn-back">
+            <i class='bx bx-undo'></i>
+        </a>
+    </div>
+    <form id="edit-patient" method="POST" action="/administration/patient/edit/update/<%= patient._id %>?_method=PUT" class="profile__main" enctype="multipart/form-data">
+        <div class="profile__main-content">
+            <div class="profile__main-left">
+                <div class="profile__main-avatar">
+                    <img src="<%= patient.image %>" alt="" class="profile__main-img">
+                    <span>
+                        <i class='bx bxs-camera-plus'></i>
+                    </span>
+                </div>
+            <button id="btn-save-profile" type="submit" class="admin__main-btn btn-action-form">
+                <i class='bx bxs-save'></i>
+            </button>
+            </div>
+            <input type="file" class="upload__file-img" id="image" name="image">
+            <div class="profile__main-info admin__patient">
+                <div class="profile__main-item">
+                    <label for="fullName" class="profile__main-label">Họ và tên</label>
+                    <input type="text" class="profile__main-input" id="fullName" name="fullname" value="<%= patient.fullname %>" >
+                </div>
+                <div class="profile__main-item">
+                    <label for="dateofbirth" class="profile__main-label">Ngày sinh</label>
+                    <% var myDate = new Date(patient.dateofbirth) %>
+                    <% var date = myDate.getDate() %>
+                    <% var month = myDate.getMonth() + 1 %>
+                    <% var year = myDate.getFullYear() %>
+                    <% if(date < 10){ %> <% date = '0' + date %> <%}%>
+                    <% if(month < 10){ %> <% month = '0' + month %> <%}%>
+                    <% var dateOnly = year + '-' + month + '-' + date %>                   
+                    <input type="date" class="profile__main-input" id="dateofbirth" name="dateofbirth" value="<%= dateOnly %>" >
+                </div>
+                <div class="profile__main-item">
+                    <label for="gender" class="profile__main-label">Giới tính</label>
+                    <select id="gender" name="gender" class="profile__main-input" required>
+                        <option value="">-- Chọn giới tính --</option>
+                        <option value="Nam" <% if(patient.gender == 'Nam') {%> selected <%}%>>Nam</option>
+                        <option value="Nữ" <% if(patient.gender == 'Nữ') {%> selected <%}%>>Nữ</option>
+                        <option value="Khác" <% if(patient.gender == 'Khác') {%> selected <%}%>>Khác</option>
+                    </select>
+                </div>
+                <div class="profile__main-item">
+                    <label for="phone" class="profile__main-label">Số điện thoại</label>
+                    <input type="phone" class="profile__main-input" id="phone" name="phone" value="<%= patient.phone %>" >
+                </div>
+                <div class="profile__main-item">
+                    <label for="email" class="profile__main-label">Email</label>
+                    <input type="email" class="profile__main-input" id="email" name="email" value="<%= patient.email %>" >
+                </div>
+                <div class="profile__main-item">
+                    <label for="address" class="profile__main-label">Địa chỉ</label>
+                    <input type="text" class="profile__main-input" id="address" name="address" value="<%= patient.address %>">
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+

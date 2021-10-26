@@ -1,0 +1,17 @@
+<script>
+    const passField = document.querySelector("input[name='password']");
+    const showBtn = document.querySelector(".show-password > i");
+
+    showBtn.onclick = function(){
+        if(passField.getAttribute("type") == "password"){
+            passField.setAttribute("type", "text");
+            showBtn.classList.remove("bxs-show");
+            showBtn.classList.add("bxs-hide");
+        }
+        else{
+            passField.type = "password";
+            showBtn.classList.add("bxs-show");
+            showBtn.classList.remove("bxs-hide");
+        }
+    }
+</script>

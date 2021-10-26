@@ -1,0 +1,74 @@
+<main class="admin__main">
+    <div class="admin__main-heading">
+        <p> <span onclick="back()" style="cursor: pointer; text-decoration: underline;">Employee</span> / Create</p>
+        <a href="" class="admin__main-btn admin__main-create btn-back">
+            <i class='bx bx-undo'></i>
+        </a>
+    </div>
+    <form id="create-employee" method="POST" action="/administration/employee/store" class="profile__main" enctype="multipart/form-data">
+        <div class="profile__main-content">
+            <div class="profile__main-left">
+                <div class="profile__main-avatar">
+                    <img src="/img/logoclinic.png" alt="" class="profile__main-img">
+                    <span>
+                        <i class='bx bxs-camera-plus'></i>
+                    </span>
+                </div>
+                <button id="btn-save-profile" type="submit" class="admin__main-btn btn-action-form">
+                    <i class='bx bxs-plus-circle' ></i>
+                </button>
+            </div>
+            <input type="file" class="upload__file-img" id="image" name="image">
+            <div class="profile__main-info admin-main-info">
+                <div class="profile__main-item">
+                    <label for="fullname" class="profile__main-label">Họ và tên</label>
+                    <input type="text" class="profile__main-input" id="fullname" name="fullname" value="" required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="username" class="profile__main-label">Tên đăng nhập</label>
+                    <input type="text" class="profile__main-input" id="username" name="username" value=""  required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="password" class="profile__main-label">Mật khẩu</label>
+                    <input type="password" class="profile__main-input" id="password" name="password" value="" required>
+                    <span class="show-password"><i class='bx bxs-show'></i></span>
+                </div>
+                <div class="profile__main-item">
+                    <label for="email" class="profile__main-label">Email</label>
+                    <input type="email" class="profile__main-input" id="email" name="email" value=""  required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="phone" class="profile__main-label">Số điện thoại</label>
+                    <input type="phone" class="profile__main-input" id="phone" name="phone" value=""  required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="building" class="profile__main-label">Số nhà và đường</label>
+                    <input type="text" class="profile__main-input" id="building" name="building" value="" required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="ward" class="profile__main-label">Phường</label>
+                    <input type="text" class="profile__main-input" id="ward" name="ward" value=""  required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="district" class="profile__main-label">Quận</label>
+                    <input type="text" class="profile__main-input" id="district" name="district" value="" required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="city" class="profile__main-label">Thành phố</label>
+                    <input type="text" class="profile__main-input" id="city" name="city" value="" required>
+                </div>
+                <div class="profile__main-item">
+                    <label for="role" class="profile__main-label">Quyền</label>
+                    <select id="role" name="role" class="profile__main-input" required>
+                        <option value="">-- Chọn quyền --</option>
+                        <option value="admin">Admin</option>
+                        <option value="dentist">Nha sĩ</option>
+                        <option value="receptionist">Lễ tân</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+

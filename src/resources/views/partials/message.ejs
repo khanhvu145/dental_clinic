@@ -1,0 +1,15 @@
+<%if (_message) { %>
+    <div style="text-align: center" class="alert alert-<%= _message.type %> main__alert">
+        <%= _message.content %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"="alert">&times;</button>
+    </div>
+<% } %>
+
+<script>
+    var alert = document.querySelector('.main__alert');
+    if(alert){
+        setTimeout(() => {
+            alert.style.display = 'none';
+        }, 3000);
+    }
+</script>

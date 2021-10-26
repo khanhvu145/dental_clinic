@@ -1,0 +1,56 @@
+<main class="admin__main">
+    <div class="admin__main-heading">
+        <p> <span onclick="back()" style="cursor: pointer; text-decoration: underline;">Employee</span> / Details / <%= employee.lastname%> <%= employee.firstname%></p>
+        <a href="" class="admin__main-btn admin__main-create btn-back">
+            <i class='bx bx-undo'></i>
+        </a>
+    </div>
+    <div class="profile__main-content">
+        <div class="profile__main-avatar">
+            <img src="<%= employee.image %>" alt="" class="profile__main-img">
+        </div>
+        <div class="profile__main-info admin-main-info">
+            <div class="profile__main-item">
+                <label for="fullname" class="profile__main-label">Họ và tên</label>
+                <input type="text" class="profile__main-input" id="fullname" name="fullname" disabled value="<%= employee.fullname %>" >
+            </div>
+            <div class="profile__main-item">
+                <label for="username" class="profile__main-label">Tên đăng nhập</label>
+                <input type="text" class="profile__main-input" id="username" name="username" disabled value="<%= employee.username %>" >
+            </div>
+            <div class="profile__main-item">
+                <label for="password" class="profile__main-label">Mật khẩu</label>
+                <input type="password" class="profile__main-input" id="password" name="password" disabled value="<%= employee.password %>">
+            </div>
+            <div class="profile__main-item">
+                <label for="email" class="profile__main-label">Email</label>
+                <input type="email" class="profile__main-input" id="email" name="email" disabled value="<%= employee.email %>">
+            </div>
+            <div class="profile__main-item">
+                <label for="phone" class="profile__main-label">Số điện thoại</label>
+                <input type="phone" class="profile__main-input" id="phone" name="phone" disabled value="<%= employee.phone %>">
+            </div>
+            <div class="profile__main-item">
+                <label for="building" class="profile__main-label">Số nhà và đường</label>
+                <input type="text" class="profile__main-input" id="building" name="building" disabled value="<%= employee.address.building %>">
+            </div>
+            <div class="profile__main-item">
+                <label for="ward" class="profile__main-label">Phường</label>
+                <input type="text" class="profile__main-input" id="ward" name="ward" disabled value="<%= employee.address.ward %>">
+            </div>
+            <div class="profile__main-item">
+                <label for="district" class="profile__main-label">Quận</label>
+                <input type="text" class="profile__main-input" id="district" name="district" disabled value="<%= employee.address.district %>">
+            </div>
+            <div class="profile__main-item">
+                <label for="city" class="profile__main-label">Thành phố</label>
+                <input type="text" class="profile__main-input" id="city" name="city" disabled value="<%= employee.address.city %>">
+            </div>
+            <div class="profile__main-item">
+                <label for="role" class="profile__main-label">Quyền</label>
+                <input type="text" class="profile__main-input" id="role" name="role" disabled value="<%= role.name %>">
+            </div>
+        </div>
+    </div>
+</main>
+

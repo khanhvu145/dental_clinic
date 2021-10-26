@@ -1,0 +1,197 @@
+<main class="admin__main admin__main--scroll">
+    <div class="admin__main-heading">
+        <p>Dashboard</p>
+    </div>
+    <div class="admin__dashboard">
+        <div class="admin__dashboard-item">
+            <div class="admin__dashboard-data">
+                <h3>4,500,000,000</h3>
+                <p>Tổng doanh thu <br> (VND)</p>
+            </div>
+            <i class='bx bx-dollar'></i>
+        </div>
+        <div class="admin__dashboard-item">
+            <div class="admin__dashboard-data">
+                <h3>320</h3>
+                <p>Tổng số cuộc hẹn <br> (Lịch hẹn)</p>
+            </div>
+            <i class='bx bx-calendar-event'></i>
+        </div>
+        <div class="admin__dashboard-item">
+            <div class="admin__dashboard-data">
+                <h3>30 phút</h3>
+                <p>Thời gian chờ trung bình <br> (Phút/Cuộc hẹn)</p>
+            </div>
+            <i class='bx bx-time-five'></i>
+        </div>
+        <div class="admin__dashboard-item">
+            <div class="admin__dashboard-data">
+                <h3>30/400</h3>
+                <p>Số lượng khách hàng mới <br> (Khách hàng)</p>
+            </div>
+            <i class='bx bx-user-plus'></i>
+        </div>
+    </div>
+    <div class="admin__chart">
+        <div class="bar">
+            <canvas class="admin__chart-bar"></canvas>
+        </div>
+        <div class="pie">
+            <canvas class="admin__chart-pie"></canvas>
+        </div>
+        <div class="line">
+            <canvas class="admin__chart-line"></canvas>
+        </div>
+    </div>
+</main>
+
+<script>
+    let chartBar = document.querySelector('.admin__chart-bar').getContext('2d');
+    let pieBar = document.querySelector('.admin__chart-pie').getContext('2d');
+    let lineBar = document.querySelector('.admin__chart-line').getContext('2d');
+
+    let revenueChart = new Chart(chartBar, {
+        type: 'bar',
+        data: {
+            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            datasets: [{
+                label: 'Doanh thu',
+                data: [
+                    250000000,
+                    320000000,
+                    280000000,
+                    350000000,
+                    370000000,
+                    290000000,
+                    400000000,
+                    380000000,
+                    390000000,
+                    430000000,
+                    500000000,
+                    540000000
+                ],
+                backgroundColor: [
+                    '#FAA98E',
+                    '#C1DD89',
+                    '#FEC67B',
+                    '#879BCE',
+                    '#FAF18C',
+                    '#ABD595',
+                    '#9086C2',
+                    '#ABDAC6',
+                    '#F388A8',
+                    '#97D1F6',
+                    '#DF92BE',
+                    '#AD8AC0',
+                ]
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Doanh thu tháng / 2021 (VND)',
+                    font: {
+                        size: 18
+                    },
+                    color: '#364D67'
+                },
+                legend: {
+                    display: false,
+                },
+            }
+        }
+    })
+
+    let pie = new Chart(pieBar, {
+        type: 'pie',
+        data: {
+            labels: ['Cấy Ghép Implant', 'Trồng Răng Implant', 'Niềng Răng Thẩm Mỹ', ' Bọc Răng Sứ', 'Nhổ Răng'],
+            datasets: [{
+                label: 'Doanh thu',
+                data: [
+                    147,
+                    119,
+                    213,
+                    124,
+                    349
+                ],
+                backgroundColor: [
+                    '#FAA98E',
+                    '#C1DD89',
+                    '#FEC67B',
+                    '#879BCE',
+                    '#FAF18C',
+                ]
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Top dịch vụ phòng khám (Người sử dụng)',
+                    font: {
+                        size: 18
+                    },
+                    color: '#364D67'
+                },
+                legend: {
+                    display: true,
+                }
+            }
+        }
+    })
+
+    let line = new Chart(lineBar, {
+        type: 'line',
+        data: {
+            labels: ['2016', '2017', '2018', '2019', '2020', ' 2021'],
+            datasets: [{
+                label: 'Doanh thu',
+                data: [
+                    2670000000,
+                    3200310000,
+                    3420000000,
+                    3915410000,
+                    4320000000,
+                    4500000000,
+                ],
+                backgroundColor: [
+                    '#FAA98E',
+                    '#C1DD89',
+                    '#FEC67B',
+                    '#879BCE',
+                    '#FAF18C',
+                    '#ABD595',
+                ],
+                fill: true,
+                backgroundColor: 'rgba(42, 255, 39, 0.6)',
+                borderColor: 'rgba(42, 255, 39, 0.6)',
+                pointBorderColor: 'rgba(42, 255, 39, 0.6)',
+                pointBackgroundColor: 'rgba(42, 255, 39, 0.6)',
+                pointHoverBackgroundColor: 'rgba(42, 255, 39, 0.6)',
+                pointHoverBorderColor: 'rgba(42, 255, 39, 0.6)',
+                pointBorderWidth: 10,
+                pointHoverRadius: 10,
+                pointHoverBorderWidth: 1,
+                pointRadius: 3,
+                borderWidth: 4,
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Doanh thu năm (VND)',
+                    font: {
+                        size: 18
+                    },
+                    color: '#364D67'
+                },
+                legend: {
+                    display: false,
+                }
+            }
+        }
+    })
+</script>

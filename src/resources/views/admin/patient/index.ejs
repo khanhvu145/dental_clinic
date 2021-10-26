@@ -1,0 +1,169 @@
+<main class="admin__main admin__main--scroll">
+    <div class="admin__main-heading">
+        <p>Patients</p>
+        <div>
+            <a href="" class="admin__main-btn admin__main-delete btn-check-apply" style="opacity: 0;">
+                <i class='bx bx-trash'></i>
+            </a>
+            <a href="/administration/patient/create" class="admin__main-btn admin__main-create">
+                <i class='bx bxs-user-plus' ></i>
+            </a>
+        </div>
+    </div>
+    <form method="POST" action="/administration/patient/delete" class="deleteFormChoose">
+        <div class="admin__main-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkAll">
+                            </div>
+                        </th>
+                        <th>#</th>
+                        <th>Fullname</th>
+                        <th>Phone Number</th>
+                        <th>Gender</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% patients.forEach(function(patient){%>
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="Ids[]" type="checkbox" value="<%= patient._id %>">
+                                </div>
+                            </td>
+                            <td><%= (patient._id.toString()).slice(-5) %></td>
+                            <td>
+                                <div class="admin__main-user">
+                                    <img src="<%= patient.image %>" alt="">
+                                    <span><%= patient.fullname %></span>
+                                </div>
+                            </td>
+                            <td><%= patient.phone %></td>
+                            <td><%= patient.gender %></td>
+                            <td>
+                                <a href="/administration/patient/details/<%= patient._id %>" class="admin__main-btn admin__main-detail">
+                                    <i class='bx bx-detail'></i>
+                                </a>
+                                <a href="/administration/patient/edit/<%= patient._id %>" class="admin__main-btn admin__main-edit">
+                                    <i class='bx bxs-edit'></i>
+                                </a>
+                                <a href="" class="admin__main-btn admin__main-delete" data-id="<%= patient._id %>">
+                                    <i class='bx bxs-trash'></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <%})%>
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <div class="admin__pagination">
+        <% if(pages > 0) { %>
+            <div class="admin__pagination-number">
+                Trang: <span><%= curentPage %></span> / <%= pages %>
+            </div>
+            <div class="admin__pagination-control">
+                <a href="?page=<%= Number(curentPage) - 1 %>"  class="admin__pagination-btn admin__pagination-left" style="<% if(curentPage == 1) {%> pointer-events: none; opacity: 0.4; <%}%>">
+                    <i class='bx bxs-chevron-left'></i>
+                </a>
+                <a href="?page=<%= Number(curentPage) + 1 %>" class="admin__pagination-btn admin__pagination-right" style="<% if(curentPage == pages) {%> pointer-events: none; opacity: 0.4; <%}%>">
+                    <i class='bx bxs-chevron-right'></i>
+                </a>
+            </div>
+        <%}%>
+    </div>
+</main>
+
+<div class="modal overlay">
+    <form id="delete" method="POST" class="form__delete">
+        <div class="form__delete-heading">
+            <h4>Xóa khách hàng !!</h4>
+            <i class='bx bx-x'></i>
+        </div>
+        <div class="form__delete-content">
+            <p>Bạn có chắc chắn muốn xóa !!</p>
+        </div>
+        <div class="form__delete-footer">
+            <button id="btnYes" type="button" class="admin__main-btn btnYes" style="display: none;">Có</button>
+            <button id="btnYesChoose" type="button" class="admin__main-btn btnYes" style="display: none;">Có</button>
+            <button type="button" class="admin__main-btn btnNo">Không</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    const btnDeletes = document.querySelectorAll('.admin__main-delete');
+    const modal = document.querySelector('.modal');
+    const btnClose = document.querySelector('.form__delete-heading > i');
+    const deleteForm = document.querySelector('.form__delete');
+    const deleteFormChoose = document.querySelector('.deleteFormChoose');
+    const btnNo = document.querySelector('.btnNo');
+    const btnYes = document.querySelector('#btnYes');
+    const btnYesChoose = document.querySelector('#btnYesChoose');
+    const btnApply = document.querySelector('.btn-check-apply');
+    var checkboxAll = document.getElementById('checkAll');
+    var courseItemCheckbox = document.querySelectorAll('input[name="Ids[]"]');
+    var ID;
+    btnDeletes.forEach(function(btn){
+        btn.onclick = function(e){
+            e.preventDefault();
+            ID = btn.getAttribute('data-id');
+            btnYes.style.display = 'block';
+            modal.style.display = 'flex';
+        }
+    })
+    btnApply.onclick = function(e){
+        e.preventDefault();
+        btnYesChoose.style.display = 'block';
+        modal.style.display = 'flex';
+    }
+    btnClose.onclick = function() {
+        btnYes.style.display = 'none';
+        btnYesChoose.style.display = 'none';
+        modal.style.display = 'none';
+    }
+    btnNo.onclick = function() {
+        btnYes.style.display = 'none';
+        btnYesChoose.style.display = 'none';
+        modal.style.display = 'none';
+    }
+    btnYes.onclick = function(){
+        deleteForm.setAttribute('action', '/administration/patient/destroy/' + ID + '?_method=DELETE')
+        deleteForm.submit();
+    }
+    btnYesChoose.onclick = function(){
+        deleteFormChoose.submit();
+    }
+    //Xử lý chọn tất cả
+    checkboxAll.onchange = function(){
+        var isCheckedAll = checkboxAll.checked;
+        courseItemCheckbox.forEach(item => item.checked = isCheckedAll);
+        renderCheckSubmitBtn();
+    }
+
+    //Course item checkbox click
+    courseItemCheckbox.forEach(function(item){
+        item.onchange = function(){
+            var checkItem = document.querySelectorAll('input[name="Ids[]"]:checked');
+            var isChecked = courseItemCheckbox.length === checkItem.length;
+            checkboxAll.checked = isChecked
+            renderCheckSubmitBtn();
+        }
+    })
+
+    //Re-render check submit button
+    function renderCheckSubmitBtn(){
+        var checkedCount = document.querySelectorAll('input[name="Ids[]"]:checked').length;
+        if(checkedCount > 0 ){
+            btnApply.style.opacity = 1;
+        }
+        else{
+            btnApply.style.opacity = 0;
+        }
+    }
+</script>

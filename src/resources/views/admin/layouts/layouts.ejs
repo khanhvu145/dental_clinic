@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') -%>
+<body>
+    <%- include('../../partials/message') -%>
+    <div class="admin">
+        <%- include('../partials/sidebar') -%>
+        <div class="admin__body">
+            <div class="container">
+                <%- include('../partials/header') -%>
+                <%- body %>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/script') -%>
+    <%- include('../../partials/hide_show_pass') -%>
+    
+</body>
+</html>
