@@ -6,7 +6,7 @@ const ejsLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 var session = require('express-session');
 const app = express();
-const port = 3000;
+// const port = 3000;
 const resLocalMiddleWare = require('./app/middlewares/ResLocalMiddleWare');
 
 const user_route = require('./routes/user');
@@ -65,6 +65,8 @@ user_route(app);
 admin_route(app);
   
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`Example app listening at http://localhost:${port}`)
+// })
+
+app.listen(process.env.PORT || 3000);
