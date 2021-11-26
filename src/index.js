@@ -6,7 +6,6 @@ const ejsLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 var session = require('express-session');
 const app = express();
-require('dotenv').config()
 // const port = 3000;
 const resLocalMiddleWare = require('./app/middlewares/ResLocalMiddleWare');
 

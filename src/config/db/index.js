@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+require('dotenv').config()
 
 async function connect() {
     try {
-        await mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/dental_clinic', {
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/dental_clinic', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
