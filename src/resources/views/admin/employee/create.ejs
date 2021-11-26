@@ -42,33 +42,41 @@
                     <input type="phone" class="profile__main-input" id="phone" name="phone" value=""  required>
                 </div>
                 <div class="profile__main-item">
-                    <label for="building" class="profile__main-label">Số nhà và đường</label>
-                    <input type="text" class="profile__main-input" id="building" name="building" value="" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="ward" class="profile__main-label">Phường</label>
-                    <input type="text" class="profile__main-input" id="ward" name="ward" value=""  required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="district" class="profile__main-label">Quận</label>
-                    <input type="text" class="profile__main-input" id="district" name="district" value="" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="city" class="profile__main-label">Thành phố</label>
-                    <input type="text" class="profile__main-input" id="city" name="city" value="" required>
+                    <label for="building" class="profile__main-label">Địa chỉ</label>
+                    <div class="profile__main-item--address">
+                        <div>
+                            <input type="text" class="profile__main-input" id="building" name="building" value="" placeholder="Số nhà, đường, khu phố" style="width:100%" required>
+                        </div>
+                        <div>
+                            <select name="city" id="select-city" class="profile__main-input" style="width:100%" required>
+                                <option></option>
+                                <% provinces.forEach(function(province, index){%>
+                                    <option value="<%= province.name %>"><%= province.name %></option>
+                                <%})%>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="district" id="select-district" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                        <div>
+                            <select name="ward" id="select-ward" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                    </div>
                 </div>
                 <div class="profile__main-item">
                     <label for="role" class="profile__main-label">Quyền</label>
                     <select id="role" name="role" class="profile__main-input" required>
                         <option value="">-- Chọn quyền --</option>
                         <option value="admin">Admin</option>
-                        <option value="dentist">Nha sĩ</option>
-                        <option value="receptionist">Lễ tân</option>
+                        <option value="Nha sĩ">Nha sĩ</option>
+                        <option value="Lễ tân">Lễ tân</option>
                     </select>
                 </div>
             </div>
         </div>
     </form>
 </main>
+
+<%- include('../partials/select2_employee') -%>
 
 

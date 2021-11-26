@@ -1,16 +1,7 @@
 <div class="sidebar">
     <ul class="sidebar-nav">
         <li class="sidebar-nav-item">
-            <a href="#" class="sidebar-nav-link">
-                <div>
-                    <i class="fas fa-home"></i>
-                </div>
-                <span>Trang chủ</span>
-            </a>
-        </li>
-
-        <li class="sidebar-nav-item">
-            <a href="" class="sidebar-nav-link active">
+            <a href="/" class="sidebar-nav-link <%if (_currentURL == '/') { %> active <% } %>">
                 <div>
                     <i class="fas fa-pen-square"></i>
                 </div>
@@ -19,16 +10,7 @@
         </li>
 
         <li class="sidebar-nav-item">
-            <a href="" class="sidebar-nav-link">
-                <div>
-                    <i class="fas fa-file-medical"></i>
-                </div>
-                <span>Khám bệnh</span>
-            </a>
-        </li>
-
-        <li class="sidebar-nav-item">
-            <a href="" class="sidebar-nav-link">
+            <a href="/appointment" class="sidebar-nav-link <%if (_currentURL.includes('appointment')) { %> active <% } %>">
                 <div>
                     <i class="fas fa-calendar-check"></i>
                 </div>
@@ -37,11 +19,20 @@
         </li>
 
         <li class="sidebar-nav-item">
-            <a href="" class="sidebar-nav-link">
+            <a href="/mycalendar" class="sidebar-nav-link <%if (_currentURL.includes('mycalendar')) { %> active <% } %>">
                 <div>
                     <i class="fas fa-calendar-alt"></i>
                 </div>
                 <span>Lịch làm việc</span>
+            </a>
+        </li>
+
+        <li class="sidebar-nav-item">
+            <a href="/patient_list" class="sidebar-nav-link <%if (_currentURL.includes('patient_list')) { %> active <% } %>">
+                <div>
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <span>Khách hàng</span>
             </a>
         </li>
 
@@ -64,11 +55,11 @@
         </li>
 
         <li class="sidebar-nav-item">
-            <a href="" class="sidebar-nav-link">
+            <a href="/myaccount/logout" class="sidebar-nav-link">
                 <div>
-                    
+                    <i class="fas fa-sign-out-alt"></i>
                 </div>
-                <span></span>
+                <span>Đăng xuất</span>
             </a>
         </li>
     </ul>

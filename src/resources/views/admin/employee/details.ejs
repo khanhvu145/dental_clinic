@@ -19,10 +19,6 @@
                 <input type="text" class="profile__main-input" id="username" name="username" disabled value="<%= employee.username %>" >
             </div>
             <div class="profile__main-item">
-                <label for="password" class="profile__main-label">Mật khẩu</label>
-                <input type="password" class="profile__main-input" id="password" name="password" disabled value="<%= employee.password %>">
-            </div>
-            <div class="profile__main-item">
                 <label for="email" class="profile__main-label">Email</label>
                 <input type="email" class="profile__main-input" id="email" name="email" disabled value="<%= employee.email %>">
             </div>
@@ -31,26 +27,33 @@
                 <input type="phone" class="profile__main-input" id="phone" name="phone" disabled value="<%= employee.phone %>">
             </div>
             <div class="profile__main-item">
-                <label for="building" class="profile__main-label">Số nhà và đường</label>
-                <input type="text" class="profile__main-input" id="building" name="building" disabled value="<%= employee.address.building %>">
-            </div>
-            <div class="profile__main-item">
-                <label for="ward" class="profile__main-label">Phường</label>
-                <input type="text" class="profile__main-input" id="ward" name="ward" disabled value="<%= employee.address.ward %>">
-            </div>
-            <div class="profile__main-item">
-                <label for="district" class="profile__main-label">Quận</label>
-                <input type="text" class="profile__main-input" id="district" name="district" disabled value="<%= employee.address.district %>">
-            </div>
-            <div class="profile__main-item">
-                <label for="city" class="profile__main-label">Thành phố</label>
-                <input type="text" class="profile__main-input" id="city" name="city" disabled value="<%= employee.address.city %>">
+                <label for="building" class="profile__main-label">Địa chỉ</label>
+                <div class="profile__main-item--address">
+                    <div>
+                        <input type="text" class="profile__main-input" id="building" name="building" value="<%= employee.address.building %>" placeholder="Số nhà, đường, khu phố" style="width:100%" disabled>
+                    </div>
+                    <div>
+                        <select name="city" id="select-city" class="profile__main-input" style="width:100%" disabled>
+                            <option></option>
+                            <% provinces.forEach(function(province, index){%>
+                                <option value="<%= province.name %>"><%= province.name %></option>
+                            <%})%>
+                        </select>
+                    </div>
+                    <div>
+                        <select name="district" id="select-district" class="profile__main-input" style="width:100%" disabled></select>
+                    </div>
+                    <div>
+                        <select name="ward" id="select-ward" class="profile__main-input" style="width:100%" disabled></select>
+                    </div>
+                </div>
             </div>
             <div class="profile__main-item">
                 <label for="role" class="profile__main-label">Quyền</label>
-                <input type="text" class="profile__main-input" id="role" name="role" disabled value="<%= role.name %>">
+                <input type="text" class="profile__main-input" id="role" name="role" disabled value="<%= (roles.find(x => x._id.equals(employee.role))).name %>">
             </div>
         </div>
     </div>
 </main>
 
+<%- include('../partials/select2_employee') -%>

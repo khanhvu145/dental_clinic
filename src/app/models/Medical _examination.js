@@ -12,9 +12,8 @@ const Medical_examination = new Schema(
             default: Date.now,
             required: true 
         },
-        re_examination_date: { 
-            type: Date, 
-            default: Date.now, 
+        symptom: { 
+            type: String
         },
         receptionist_name: { 
             type: String, 

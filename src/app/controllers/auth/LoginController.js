@@ -1,5 +1,7 @@
 const Employee = require('../../models/Employee');
 const Role = require('../../models/Role');
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
 const { mongooseToObject } = require('../../../util/mongoose');
 
 class LoginController{
@@ -14,7 +16,7 @@ class LoginController{
     login(req, res, next) {
         Employee.findOne({ username: req.body.username })
             .then((employee) => {
-                if(employee && employee.password === req.body.password){
+                if(employee && bcrypt.compareSync(req.body.password, employee.password)){
                     var sess = req.session;
                     sess.isLogin = true;
                     sess.user = employee;
@@ -23,22 +25,8 @@ class LoginController{
                         content: 'Đăng nhập thành công!'
                     };
                     Role.findById(employee.role, function(err, role) {
-                        switch (role.name) {
-                            case 'admin':
-                                sess.roleName = role.name;
-                                res.redirect('/administration');
-                                break;
-                            case 'dentist':
-                                sess.roleName = role.name;
-                                res.redirect('/');
-                                break;
-                            case 'receptionist':
-                                sess.roleName = role.name;
-                                res.redirect('/');
-                                break;
-                            default:
-                                break;
-                        }
+                        sess.roleName = role.name;
+                        res.redirect('/');
                     })
                 }
                 else{

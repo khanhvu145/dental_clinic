@@ -174,14 +174,19 @@ body{
 
 .admin__header-user{
     display: flex;
+    justify-content: right;
+    flex: 1;
+}
+
+.admin__header-user > div{
+    display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 16px;
     position: relative;
     cursor: pointer;
 }
 
-.admin__header-user::after{
+.admin__header-user > div::after{
     content: '';
     position: absolute;
     width: 100%;
@@ -190,7 +195,7 @@ body{
     background-color: transparent;
 }
 
-.admin__header-user:hover .admin__header-list{
+.admin__header-user > div:hover .admin__header-list{
     display: block;
 }
 
@@ -260,7 +265,6 @@ body{
     gap: 12px;
     padding: 12px 24px;
     transition: all ease 0.5s;
-
 }
 
 .admin__header-link:hover{
@@ -291,6 +295,10 @@ body{
     color: var(--font-color);
 }
 
+.patient__list-select{
+    padding: 16px;
+}
+
 .admin__main-table{
     border-radius: 8px;
     overflow: hidden;
@@ -306,7 +314,7 @@ body{
 
 .admin__main-table > table th,
 .admin__main-table > table td {
-    padding: 16px 28px;
+    padding: 16px;
     text-align: left;
     vertical-align: middle;
 }
@@ -382,12 +390,32 @@ body{
         "item3 item3"
         "item4 item4"
         "item5 item5"
+        "item6 item6"
+        "item7 item7";
+    margin-top: 0;
+}
+
+.profile__main-item--address{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 36px 48px;
+}
+
+.profile__main-info.admin-main-create{
+    grid-template-areas: 
+        "item1 item1"
+        "item2 item2"
+        "item3 item3"
+        "item4 item4"
+        "item5 item5"
         "item6 item7"
         "item8 item9"
         "item10 item10";
+    margin-top: 0;
 }
 
 .profile__main-info.admin__patient{
+    margin-top: 0;
     grid-template-areas: 
         "item1 item1"
         "item2 item3"
@@ -396,12 +424,15 @@ body{
         "item6 item6";
 }
 
+.profile__main-item:nth-child(9){
+    grid-area: item9;
+}
+
 .profile__main-item:nth-child(10){
     grid-area: item10;
 }
 
 .overlay{
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -415,6 +446,14 @@ body{
 .form__delete{
     background-color: var(--item-color);
     width: 30%;
+    position: absolute;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -20%);
+    background-color: #fff;
+    border-radius: 5px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    animation: modalShow ease 0.8s;
 }
 
 .form__delete-heading{
@@ -579,4 +618,82 @@ body{
 .admin__pagination-btn:hover{
     color: var(--background-color);
     background-color: var(--font-color);
+}
+
+/************/
+.changePass-modal{
+	display: none;
+}
+
+.admin__changePass-form{
+    position: absolute;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -20%);
+    background-color: #fff;
+	border-radius: 5px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	animation: modalShow ease 0.8s;
+	width: 40%;
+}
+
+.admin__changePass-title{
+    padding: 12px;
+	color: #3b3b3b;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin__changePass-title > i{
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.admin__changePass-content{
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.admin__changePass-control{
+	display: flex;
+	justify-content: right;
+	padding: 16px;
+}
+
+.admin__changePass-item{
+	position: relative;
+}
+
+.admin__changePass-item > .show-password{
+	position: absolute;
+    right: 16px;
+    top: 56%;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+    color: rgb(95, 95, 95);
+}
+
+.admin__changePass-item input:valid ~ span{
+    display: block;
+}
+
+.select2-container .select2-selection--single {
+    border-radius: 6px;
+    font-size: 16px;
+    color: var(--font-color);
+    padding: 8px 16px;
+    border: none;
+    border-bottom: 2px solid rgba(82, 161, 157, 0.719);
+    outline-color: rgba(82, 161, 157, 0.719);
+    margin-top: 16px;
+}
+
+.select2-selection__arrow {
+    height: 72px !important;
 }

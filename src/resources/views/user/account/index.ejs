@@ -1,0 +1,257 @@
+<div class="wrapper">
+    <div class="content">
+        <div class="tab-wrap">
+            <div class="account__heading">
+                <p>Thông tin cá nhân</p>
+            </div>
+            <form id="edit-employee" method="POST" action="/myaccount/update?_method=PUT" class="profile__main" enctype="multipart/form-data">
+                <div class="tab-content">
+                    <div class="avatar">
+                        <div class="avatar__content">
+                            <img src="<%= employee.image %>" alt="" class="avatar__content-img">
+                        </div>
+                        <button type="button" class="avatar__btn">
+                            <i class='bx bxs-camera-plus'></i>
+                            <span>Thêm ảnh</span>
+                        </button>
+                    </div>
+                    <input type="file" class="upload__file-img" id="image" name="image">
+                    <div class="information myaccount">
+                        <div class="information__item">
+                            <label for="username" class="information__item-label">Tên đăng nhập</label>
+                            <input type="text" class="information__item-input" id="username" name="username" value="<%= employee.username %>" disabled>
+                        </div>
+                        <div class="information__item">
+                            <label for="fullname" class="information__item-label">Họ và tên</label>
+                            <input type="text" class="information__item-input" id="fullname" name="fullname" value="<%= employee.fullname %>" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="email" class="information__item-label">Email</label>
+                            <input type="email" class="information__item-input" id="email" name="email" value="<%= employee.email %>" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="phone" class="information__item-label">Số điện thoại</label>
+                            <input type="phone" class="information__item-input" id="phone" name="phone" value="<%= employee.phone %>" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="building" class="information__item-label">Địa chỉ</label>
+                            <div class="information__item-address">
+                                <div>
+                                    <input type="text" class="information__item-input" id="building" name="building" value="<%= employee.address.building %>" placeholder="Số nhà, đường, khu phố" style="width:100%" required>
+                                </div>
+                                <div>
+                                    <select name="city" id="select-city" class="information__item-input" style="width:100%" required>
+                                        <option></option>
+                                        <% provinces.forEach(function(province, index){%>
+                                            <option value="<%= province.name %>"><%= province.name %></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select name="district" id="select-district" class="information__item-input" style="width:100%" required></select>
+                                </div>
+                                <div>
+                                    <select name="ward" id="select-ward" class="information__item-input" style="width:100%" required></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab__control" style="margin-top: 32px;">
+                    <button type="button" class="control-btn blue changepass-btn">
+                        <i class='bx bxs-lock-alt'></i>
+                        <span>Đổi mật khẩu</span>
+                    </button>
+                    <button type="submit" class="control-btn yellow">
+                        <i class='bx bxs-save' ></i>
+                        <span>Cập nhật</span>
+                    </button>
+                    <a href="/close" class="control-btn red">
+                        <i class='bx bx-x'></i>
+                        <span>Đóng</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="overlay changePass-modal">
+    <form method="POST" action="/myaccount/change_password?_method=PUT" id="patient__list" class="patient__list changePass__list">
+        <div class="patient__list-title">
+            <h3>Đổi mật khẩu</h3>
+            <span class="close_changePass_modal"><i class='bx bx-x-circle'></i></span>
+        </div>
+        <div class="changePass-content">
+            <div class="information__item changePass__item">
+                <label for="currentPass" class="information__item-label">Mật khẩu hiện tại:</label>
+                <input type="password" class="information__item-input" id="currentPass" name="currentPass" required>
+                <span class="show-password"><i class='bx bxs-show'></i></span>
+            </div>
+            <div class="information__item changePass__item">
+                <label for="newPass" class="information__item-label">Mật khẩu mới:</label>
+                <input type="password" class="information__item-input" id="newPass" name="newPass" required>
+                <span class="show-password"><i class='bx bxs-show'></i></span>
+            </div>
+            <div class="information__item changePass__item">
+                <label for="confirmPass" class="information__item-label">Xác nhận mật khẩu:</label>
+                <input type="password" class="information__item-input" id="confirmPass" name="confirmPass" required>
+                <span class="show-password"><i class='bx bxs-show'></i></span>
+            </div>
+        </div>
+        <div class="changePass-control">
+            <button type="submit" class="control-btn green changePass__btn">
+                <i class='bx bxs-lock'></i>
+                <span>Đổi mật khẩu</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const currentPass = document.querySelector("input[name='currentPass']");
+    const newPass = document.querySelector("input[name='newPass']");
+    const confirmPass = document.querySelector("input[name='confirmPass']");
+    const showBtn = document.querySelectorAll(".show-password > i");
+    const changePass_modal = document.querySelector(".changePass-modal");
+    const close_change_modal = document.querySelector(".close_changePass_modal");
+    const changePass_btn = document.querySelector('.changepass-btn');
+    const changePass_input = document.querySelectorAll('.changePass__item > input');
+
+    changePass_btn.onclick = function(){
+        changePass_modal.style.display = "block";
+    }
+
+    close_change_modal.onclick = function(){
+        changePass_modal.style.display = "none";
+        changePass_input.forEach(function(item, index){
+            item.value = '';
+            if(item.getAttribute("type") == "text"){
+                item.setAttribute("type", "password");
+                showBtn[index].classList.remove("bxs-hide");
+                showBtn[index].classList.add("bxs-show");
+            }
+        });
+    }
+
+    showBtn[0].onclick = function(){
+        if(currentPass.getAttribute("type") == "password"){
+            currentPass.setAttribute("type", "text");
+            showBtn[0].classList.remove("bxs-show");
+            showBtn[0].classList.add("bxs-hide");
+        }
+        else{
+            currentPass.type = "password";
+            showBtn[0].classList.add("bxs-show");
+            showBtn[0].classList.remove("bxs-hide");
+        }
+    }
+
+    showBtn[1].onclick = function(){
+        if(newPass.getAttribute("type") == "password"){
+            newPass.setAttribute("type", "text");
+            showBtn[1].classList.remove("bxs-show");
+            showBtn[1].classList.add("bxs-hide");
+        }
+        else{
+            newPass.type = "password";
+            showBtn[1].classList.add("bxs-show");
+            showBtn[1].classList.remove("bxs-hide");
+        }
+    }
+
+    showBtn[2].onclick = function(){
+        if(confirmPass.getAttribute("type") == "password"){
+            confirmPass.setAttribute("type", "text");
+            showBtn[2].classList.remove("bxs-show");
+            showBtn[2].classList.add("bxs-hide");
+        }
+        else{
+            confirmPass.type = "password";
+            showBtn[2].classList.add("bxs-show");
+            showBtn[2].classList.remove("bxs-hide");
+        }
+    }
+
+    var provinces = JSON.parse(`<%- JSON.stringify(provinces) %>`);
+    var districts= JSON.parse(`<%- JSON.stringify(districts) %>`);
+    var wards = JSON.parse(`<%- JSON.stringify(wards) %>`);
+
+    $('#select-city').select2({
+        placeholder: "Tỉnh/Thành phố",
+        allowClear: true,
+    });
+
+    $('#select-district').select2({
+        placeholder: "Quận/Huyện",
+        allowClear: true,
+    });
+    
+    $('#select-ward').select2({
+        placeholder: "Phường/Xã/Ấp",
+        allowClear: true,
+    });
+
+    function renderDistrict(listDistrict){
+        const htmls = listDistrict.map((district, index) => {
+            return `
+                <option value="${district.name}">${district.name}</option>
+            `
+        })
+        htmls.unshift('<option></option>');
+        document.querySelector('#select-district').innerHTML = htmls.join('');
+    }
+
+    function renderWard(listWard){
+        const htmls = listWard.map((ward, index) => {
+            return `
+                <option value="${ward.name}">${ward.name}</option>
+            `
+        })
+        htmls.unshift('<option></option>');
+        document.querySelector('#select-ward').innerHTML = htmls.join('');
+    }
+
+    var districtsNew;
+
+    $('#select-city').on('change', function (e) {
+        var index = $("#select-city").prop('selectedIndex');
+        var districtList = [];
+        districts.forEach(function(district){
+            if(district.province_code == provinces[index - 1].code){
+                districtList.push(district);
+            }
+        })
+        districtsNew = districtList;
+        renderDistrict(districtList);
+        renderWard([]);
+    });
+
+    $('#select-district').on('change', function (e) {
+        var index = $("#select-district").prop('selectedIndex');
+        var wardList = [];
+        wards.forEach(function(ward){
+            if(ward.district_code == districtsNew[index - 1].code){
+                wardList.push(ward);
+            }
+        })
+        renderWard(wardList);
+    });
+
+    $('#select-city').on('select2:clear', function (e) {
+        renderDistrict([]);
+        renderWard([]);
+    });
+
+    $('#select-district').on('select2:clear', function (e) {
+        renderWard([]);
+    });
+
+    $('#select-city').val('<%= employee.address.city %>'); 
+    $('#select-city').trigger('change');
+    $('#select-district').val('<%= employee.address.district %>'); 
+    $('#select-district').trigger('change');
+    $('#select-ward').val('<%= employee.address.ward %>'); 
+    $('#select-ward').trigger('change');
+</script>
+

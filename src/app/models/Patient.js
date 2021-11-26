@@ -20,8 +20,13 @@ const Patient = new Schema(
             required: true 
         },
         address: { 
-            type: String, 
-            required: true 
+            type: Object,
+            properties: { 
+                building: { type: String},
+                ward: { type: String},
+                district: { type: String},
+                city: { type: String}
+            }
         },
         email: { 
             type: String, 
@@ -35,6 +40,8 @@ const Patient = new Schema(
                 imgBase64: { type: String, required: true},
             }
         },
+        allergies: [String],
+        background_diseases:[String]
     },
     {
         timestamps: true,

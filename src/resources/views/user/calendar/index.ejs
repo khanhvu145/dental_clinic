@@ -1,0 +1,303 @@
+<div class="wrapper">
+    <div class="content calendar">
+        <div class="calendar__heading">
+            <div class="title calendar__heading-title">
+                Lịch làm việc
+            </div>
+        </div>
+        <div class="calendar__content">
+            <div id='calendar'></div>
+        </div>
+    </div>
+</div>
+
+<div id="popup" class="overlay">
+  <form method="POST" action="/mycalendar/create" class="patient__list popup__content">
+      <div class="patient__list-title popup__title">
+          <h3>Thông tin lịch hẹn</h3>
+          <span>
+              <i class='bx bx-x-circle' ></i>
+          </span>
+      </div>
+      <div class="detail_appointment-content popup__info"></div>
+      <div class="detail_appointment-control popup__control"></div>
+  </form>
+</div>
+<form action="" method="POST" id="calendar-edit" style="display: none">
+  <input type="date" name="date">
+  <input type="text" name="time">
+  <input type="text" name="period">
+</form>
+
+<script>
+    //Hàm tính thời gian
+    function timeToMins(time) {
+          var b = time.split(':');
+          return Number(b[0] * 60) + Number(b[1]);
+    };
+    function timeFromMins(mins) {
+            function z(n) {
+                if (n < 0) return ('-0' + (n).toString().slice(1));
+                return (n < 10 ? '0' : '') + n;
+            };
+            var h = (mins / 60 | 0);
+            var m = mins % 60;
+            return z(h) + ':' + z(m);
+    };
+    function addTimes(time0, time1) {
+        return timeFromMins(timeToMins(time0) + timeToMins(time1));
+    };
+    function subTimes(time0, time1) {
+        return timeFromMins(Math.abs(timeToMins(time0) - timeToMins(time1)));
+    };
+    function getDateFromHours(date, time) {
+      time = time.split(':');
+      let now = new Date(date);
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...time);
+    }
+    function addZero(i) {
+        if (i < 10) {i = "0" + i}
+        return i;
+      }
+    //Đóng modal
+    document.querySelector('.popup__title > span').onclick = function(){
+        document.querySelector('#popup').style.display = 'none';
+    }
+    //Hàm chỉnh sửa calendar
+    function calendar_edit(info){
+      const form_calendar = document.querySelector('#calendar-edit');
+      const input = document.querySelectorAll('#calendar-edit > input');
+      input.forEach(function(x){
+        x.setAttribute('value', '');
+      })
+      var time_start = addZero(info.event.start.getHours()) + ':' + addZero(info.event.start.getMinutes());
+      var time_end = addZero(info.event.end.getHours()) + ':' + addZero(info.event.end.getMinutes());
+      var exam_date = new Date(info.event.start);
+      input[0].setAttribute('value', exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate());
+      input[1].setAttribute('value', time_start);
+      input[2].setAttribute('value', subTimes(time_start, time_end));
+      form_calendar.setAttribute('action', `/mycalendar/edit/${info.event.id}?_method=PUT`);
+      form_calendar.submit();
+    }
+
+    var appointmentList = JSON.parse(`<%- JSON.stringify(appointments) %>`);
+    var patientList = JSON.parse(`<%- JSON.stringify(patients) %>`);
+    var dentistList = JSON.parse(`<%- JSON.stringify(dentists) %>`);
+    var serviceList = JSON.parse(`<%- JSON.stringify(services) %>`);
+
+
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          headerToolbar: {
+            left: 'prev today next',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+          slotMinTime: '07:00:00',
+          slotMaxTime: '22:00:00',
+          height: 'auto',
+          selectable: true,
+          selectMirror: true,
+          editable:true,
+          selectOverlap: false,
+          events: appointmentList.map(function(event){
+            return {
+              id: event._id,
+              title: patientList.find(x => x._id == event.patient_id).fullname,
+              start: new Date(getDateFromHours(event.date, event.time)),
+              end: new Date(getDateFromHours(event.date, addTimes(event.time, event.period))),
+            }
+          }),
+          eventTextColor: '#fff',
+          eventBackgroundColor: '#8fdf82',
+          eventBorderColor: '#8fdf82',
+          eventClick: function(info) {
+              var appointment_info = appointmentList.find(x => x._id == info.event.id);
+              var patient_info = patientList.find(x => x._id == appointment_info.patient_id);
+              var dentist_info = dentistList.find(x => x._id == appointment_info.dentist_id);
+              var service_info = serviceList.find(x => x._id == appointment_info.service_id);
+              var dateofbirth = new Date(patient_info.dateofbirth);
+              var exam_date = new Date(appointment_info.date);
+              document.querySelector('#popup').style.display = 'block';             
+              document.querySelector('.popup__info').innerHTML = `
+              <div class="detail_appointment-item">
+                    <p>Mã hồ sơ:</p>
+                    <span>${(patient_info._id.toString()).slice(-10)}</span>
+                </div>
+                <div class="detail_appointment-item">
+                    <p>Họ và tên:</p>
+                    <span>${patient_info.fullname}</span>
+                </div>
+                <div class="detail_appointment-item">
+                    <p>Ngày sinh:</p>
+                    <span>${('0' + dateofbirth.getDate()).slice(-2) + '/' + ('0' + (dateofbirth.getMonth() + 1)).slice(-2) + '/' +  dateofbirth.getFullYear()}</span>
+                </div>
+                <div class="detail_appointment-item">
+                    <p>Số điện thoại:</p>
+                    <span>${patient_info.phone}</span>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="dentist">Nha sĩ phụ trách:</label>
+                    <input type="text" id="dentist" name="dentist" value="Bs ${dentist_info.fullname}" disabled>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                  <label for="service">Điều trị:</label>
+                  <input type="text" id="service" name="service" value="${service_info.name}" disabled>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label>Thời gian:</label>
+                    <div>
+                      <input type="text" id="date" name="date" value="${exam_date.getDate() + '/' + (exam_date.getMonth() + 1) + '/' + exam_date.getFullYear()}" disabled>
+                      <input type="time" id="time" name="time" value="${appointment_info.time}" disabled>
+                      <span>-</span>
+                      <input type="time" id="period" name="period" value="${addTimes(appointment_info.time, appointment_info.period)}" disabled>
+                    </div>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="symptom">Triệu chứng:</label>
+                    <textarea name="symptom" id="symptom" rows="3" disabled>${appointment_info.symptom}</textarea>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="note">Chú ý:</label>
+                    <textarea name="note" id="note" rows="3" disabled>${appointment_info.note}</textarea>
+                </div>
+              `
+                
+              document.querySelector('.popup__control').innerHTML = `
+                <a href="/patient_list/detail/${patient_info._id}" class="control-btn green">
+                    <i class='bx bxs-book-open'></i>
+                    <span>Hồ sơ khách hàng</span>
+                </a>
+              `
+            },
+          eventDrop: function(info) {
+            if (!confirm("Bạn có chắc với sự thay đổi?")) {
+                info.revert();
+            }
+            else{
+              calendar_edit(info);
+            }
+          },
+          eventResize: function(info) {
+            if (!confirm("Bạn có chắc với sự thay đổi?")) {
+                info.revert();
+            }
+            else{
+              calendar_edit(info);
+            }
+          },
+          select: function(info){
+              document.querySelector('#popup').style.display = 'block';      
+              var exam_date = new Date(info.startStr);       
+              var exam_date_end = new Date(info.endStr);       
+              document.querySelector('.popup__info').innerHTML = `
+                <div class="detail_appointment-item">
+                    <p>Mã hồ sơ:</p>
+                    <input type="text" id="patientSearch_home-value" name="patient_id" style="display: none;">
+                    <select id="patientSearch_home" class="appointment__heading-input" style="flex: 1;" required>
+                        <option></option>
+                        <% patients.forEach(function(patient, index){%>
+                            <option value="<%= patient.fullname %>"><%= (patient._id.toString()).slice(-10) %> | <%= patient.fullname %> | <%= patient.dateofbirth.getFullYear() %></option>
+                        <%})%>
+                    </select>
+                </div>
+                <div class="detail_appointment-item calendar-add">
+                    <p>Họ và tên:</p>
+                    <span></span>
+                </div>
+                <div class="detail_appointment-item calendar-add">
+                    <p>Ngày sinh:</p>
+                    <span></span>
+                </div>
+                <div class="detail_appointment-item calendar-add">
+                    <p>Số điện thoại:</p>
+                    <span></span>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="dentist">Nha sĩ phụ trách:</label>
+                    <input type="text" id="dentist" name="dentist" value="Bs <%= _session.user.fullname %>" disabled>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                  <label for="service">Điều trị:</label>
+                  <input type="text" id="serviceSearch_home-value" name="service_id" style="display: none;">
+                  <select id="serviceSearch_home" class="appointment__heading-input" style="flex: 1;" required>
+                      <option></option>
+                      <% services.forEach(function(service, index){%>
+                          <option value="<%= service.name %>"><%= service.name %></option>
+                      <%})%>
+                  </select>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label>Thời gian:</label>
+                    <div>
+                      <input type="date" id="date" name="date" value="${exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate()}" required>
+                      <input type="time" id="time" name="timeStart" min="07:00" max="21:00" value="${addZero(exam_date.getHours()) + ':' + addZero(exam_date.getMinutes())}" required>
+                      <input type="time" id="time" name="timeEnd" min="07:00" max="21:00" value="${addZero(exam_date_end.getHours()) + ':' + addZero(exam_date_end.getMinutes())}" required>
+                    </div>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="symptom">Triệu chứng:</label>
+                    <textarea name="symptom" id="symptom" rows="3"></textarea>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="note">Chú ý:</label>
+                    <textarea name="note" id="note" rows="3"></textarea>
+                </div>
+              `
+              document.querySelector('.popup__control').innerHTML = `
+                <button type="submit" class="control-btn green">
+                    <i class='bx bx-save'></i>
+                    <span>Xác nhận</span>
+                </button>
+              `
+              //////
+              $('#patientSearch_home').select2({
+                  placeholder: "Mã hoặc tên",
+                  allowClear: true,
+                  templateSelection: function(state) {
+                      if (!state.id) {
+                          return state.text;
+                      }
+                      var search_value = state.text.split(' | ');
+                      return search_value[0];
+                  },
+              });
+
+              $('#serviceSearch_home').select2({
+                  placeholder: "Nội dung",
+                  allowClear: true,
+              });
+
+              $('#patientSearch_home').on('change', function (e) {
+                  var index = $("#patientSearch_home").prop('selectedIndex');
+                  var dateofbirth = new Date(patientList[index - 1].dateofbirth);
+                  document.querySelector('#patientSearch_home-value').value = patientList[index - 1]._id;
+                  document.querySelectorAll('.calendar-add > span')[0].innerText = patientList[index - 1].fullname;
+                  document.querySelectorAll('.calendar-add > span')[1].innerText = ('0' + dateofbirth.getDate()).slice(-2) + '/' + ('0' + (dateofbirth.getMonth() + 1)).slice(-2) + '/' +  dateofbirth.getFullYear();
+                  document.querySelectorAll('.calendar-add > span')[2].innerText = patientList[index - 1].phone;
+              });
+
+              $('#patientSearch_home').on('select2:clear', function (e) {
+                document.querySelectorAll('.calendar-add > span')[0].innerText = '';
+                document.querySelectorAll('.calendar-add > span')[1].innerText = '';
+                document.querySelectorAll('.calendar-add > span')[2].innerText = '';
+              });
+
+              $('#serviceSearch_home').on('change', function (e) {
+                  var index = $("#serviceSearch_home").prop('selectedIndex');
+                  document.querySelector('#serviceSearch_home-value').value = serviceList[index - 1]._id;
+              });
+
+              $('#serviceSearch_home').on('select2:clear', function (e) {
+                document.querySelector('#serviceSearch_home-value').value = '';
+              });
+          }
+        });
+        calendar.render();
+    }); 
+
+    
+</script>

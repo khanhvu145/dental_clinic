@@ -1,9 +1,16 @@
 const Employee = require('../../models/Employee');
 const Role = require('../../models/Role');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
 const { mongooseToObject } = require('../../../util/mongoose');
 const { mutipleMongooseToObject } = require('../../../util/mongoose');
+
+let provinces = axios.get('https://provinces.open-api.vn/api/p/');
+let districts = axios.get('https://provinces.open-api.vn/api/d/');
+let wards = axios.get('https://provinces.open-api.vn/api/w/');
 
 class EmployeeController{
     //[GET]: /employee
@@ -47,7 +54,7 @@ class EmployeeController{
                 roles = roleList;
             })
             .catch(next);
-        Employee.find({fullname: { $regex: keyword }, role: { $ne: '615b00ec8ee0220383521b5e' }})
+        Employee.find({fullname: { $regex: keyword, $options:"$i" }, role: { $ne: '615b00ec8ee0220383521b5e' }})
             .then((employees) => {
                 res.render('admin/employee/index', {
                     employees: mutipleMongooseToObject(employees),
@@ -61,24 +68,39 @@ class EmployeeController{
 
     //[GET]: /employee/details/:id/
     details(req, res, next) {
-        Employee.findOne({ _id: req.params.id })
-            .then((employee) => {
-                Role.findOne({_id: employee.role})
-                    .then((role) => {
-                        role = role;
-                        res.render('admin/employee/details', {
-                            employee: mongooseToObject(employee),
-                            role: mongooseToObject(role),
-                        });
-                    })
-                    .catch(next);
+        let employee = Employee.findOne({ _id: req.params.id });
+        let roles = Role.find({});
+        Promise.all([employee, provinces, districts, wards, roles])
+            .then(([employee, provinces, districts, wards, roles]) => {
+                res.render('admin/employee/details', {
+                    employee: mongooseToObject(employee),
+                    roles: mutipleMongooseToObject(roles),
+                    provinces: provinces.data,
+                    districts: districts.data,
+                    wards: wards.data,
+                });
             })
-            .catch(next); 
+            .catch(next);
     }
 
     //[GET]: /employee/create
     create(req, res, next) {
-        res.render('admin/employee/create');
+        Promise.all([provinces, districts, wards])
+            .then(([provinces, districts, wards]) => {
+                res.render('admin/employee/create', {
+                    provinces: provinces.data,
+                    districts: districts.data,
+                    wards: wards.data,
+                    employee: {
+                        address: {
+                            city: '',
+                            district: '',
+                            ward: ''
+                        }
+                    },
+                });
+            })
+            .catch(next);
     }
 
     //[POST]: /employee/store
@@ -102,7 +124,7 @@ class EmployeeController{
                 Employee.create({
                     fullname: formData.fullname, 
                     username: formData.username,  
-                    password: formData.password, 
+                    password: bcrypt.hashSync(formData.password, salt), 
                     email: formData.email,
                     phone: formData.phone,
                     role: formData.role,
@@ -126,18 +148,17 @@ class EmployeeController{
 
     //[GET]: /employee/edit
     edit(req, res, next) {
-        var role;
-        Employee.findOne({ _id: req.params.id })
-            .then((employee) => {
-                Role.findOne({_id: employee.role})
-                    .then((role) => {
-                        role = role;
-                        res.render('admin/employee/edit', {
-                            employee: mongooseToObject(employee),
-                            role: mongooseToObject(role),
-                        });
-                    })
-                    .catch(next);
+        let employee = Employee.findOne({ _id: req.params.id });
+        let roles = Role.find({});
+        Promise.all([employee, provinces, districts, wards, roles])
+            .then(([employee, provinces, districts, wards, roles]) => {
+                res.render('admin/employee/edit', {
+                    employee: mongooseToObject(employee),
+                    roles: mutipleMongooseToObject(roles),
+                    provinces: provinces.data,
+                    districts: districts.data,
+                    wards: wards.data,
+                });
             })
             .catch(next);
     }
@@ -168,8 +189,6 @@ class EmployeeController{
                 { 
                     $set: { 
                         fullname: formData.fullname, 
-                        username: formData.username,  
-                        password: formData.password, 
                         email: formData.email,
                         phone: formData.phone,
                         role: roleId,

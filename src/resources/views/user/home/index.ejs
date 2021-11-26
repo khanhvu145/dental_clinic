@@ -2,17 +2,14 @@
     <div class="tabs">
         <ul>
             <li class="active">
-                <span class="icon"></span>
-                <span class="text">Thông tin bệnh nhân</span>
+                <span class="text">Thông tin khách hàng</span>
             </li>
 
             <li>
-                <span class="icon"></span>
                 <span class="text">Đăng ký khám</span>
             </li>
 
             <li>
-                <span class="icon"></span>
                 <span class="text">Danh sách đăng ký khám</span>
             </li>
         </ul>
@@ -20,110 +17,147 @@
 
     <div class="content">
         <div class="tab-wrap" style="display: block;">
-            <div class="tab__header">
-                <div class="title">
-                    Thông tin bệnh nhân
+            <form id="home__form" method="POST" action="/create/patient" class="home__form" enctype="multipart/form-data">
+                <div class="tab__header">
+                    <div class="title">
+                        Thông tin bệnh nhân
+                    </div>
+                    <div class="tab__header-control">
+                        <button type="button" class="control-btn blue select-btn">
+                            <i class='bx bx-search'></i>
+                            <span>Chọn</span>
+                        </button>
+                        <button type="submit"class="control-btn green" <%if (_selectPatient) {%> disabled <%}%>>
+                            <i class='bx bxs-user-plus'></i>
+                            <span>Thêm</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="tab__header-control">
-                    <button class="control-btn select-btn">
-                        <i class='bx bx-search'></i>
-                        <span>Chọn</span>
-                    </button>
-                    <button class="control-btn create-btn">
-                        <i class='bx bxs-user-plus'></i>
-                        <span>Thêm</span>
-                    </button>
-                </div>
-            </div>
-            <div class="tab-content">
-                <div class="avatar">
-                    <div class="avatar__content">
-                        <img src="/img/user.png" alt="" class="avatar__content-img">
+                <div class="tab-content">
+                    <div class="avatar">
+                        <div class="avatar__content">
+                            <% if (_selectPatient) { %>
+                                <img src="<%= _selectPatient.image %>" alt="" class="avatar__content-img">
+                            <%} else { %>
+                                <img src="/img/user.png" alt="" class="avatar__content-img">
+                            <% } %>
+                        </div>
+                        <button type="button" class="avatar__btn">
+                            <i class='bx bxs-camera-plus'></i>
+                            <span>Thêm ảnh</span>
+                        </button>
                     </div>
-                    <button class="avatar__btn">
-                        <i class='bx bxs-camera-plus'></i>
-                        <span>Thêm ảnh</span>
-                    </button>
-                </div>
-                <input type="file" class="upload__file-img" id="image" name="image">
-                <div class="information">
-                    <div class="information__item">
-                        <label for="id" class="information__item-label">Mã hồ sơ</label>
-                        <input type="text" class="information__item-input" id="id" name="id" value="" disabled placeholder="Mã hồ sơ">
-                    </div>
-                    <div class="information__item">
-                        <label for="fullname" class="information__item-label">Họ và tên</label>
-                        <input type="text" class="information__item-input" id="fullname" name="fullname" value="" placeholder="Họ và tên" required>
-                    </div>
-                    <div class="information__item">
-                        <label for="dateofbirth" class="information__item-label">Ngày sinh</label>
-                        <input type="date" class="information__item-input" id="dateofbirth" name="dateofbirth" value="" placeholder="Ngày sinh" required>
-                    </div>
-                    <div class="information__item">
-                        <label for="gender" class="information__item-label">Giới tính</label>
-                        <select id="gender" name="gender" class="information__item-input" required>
-                            <option value="">-- Chọn giới tính --</option>
-                            <option value="Nam">Nam</option>
-                            <option value="Nữ">Nữ</option>
-                            <option value="Khác">Khác</option>
-                        </select>
-                    </div>
-                    <div class="information__item">
-                        <label for="phone" class="information__item-label">Số điện thoại</label>
-                        <input type="phone" class="information__item-input" id="phone" name="phone" value="" placeholder="Số điện thoại" required>
-                    </div>
-                    <div class="information__item">
-                        <label for="email" class="information__item-label">Email</label>
-                        <input type="email" class="information__item-input" id="email" name="email" value="" placeholder="Email" required>
-                    </div>
-                    <div class="information__item">
-                        <label for="address" class="information__item-label">Địa chỉ</label>
-                        <input type="address" class="information__item-input" id="address" name="address" value="" placeholder="Địa chỉ" required>
-                    </div>
-                    <div class="information__item">
-                        <label for="allergy" class="information__item-label">Dị ứng</label>
-                        <div class="allergy__group">
-                            <div class="allergy__item">
-                                <input type="checkbox" id="box-1" class="allergy__item-input">
-                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
-                            </div>
-                            <div class="allergy__item">
-                                <input type="checkbox" id="box-1" class="allergy__item-input">
-                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
-                            </div>
-                            <div class="allergy__item">
-                                <input type="checkbox" id="box-1" class="allergy__item-input">
-                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
-                            </div>
-                            <div class="allergy__item">
-                                <input type="checkbox" id="box-1" class="allergy__item-input">
-                                <label for="box-1" class="allergy__item-label">Kháng sinh Amoxycllin</label>
+                    <input type="file" class="upload__file-img" id="image" name="image">
+                    <div class="information">
+                        <div class="information__item">
+                            <label for="id" class="information__item-label">Mã hồ sơ</label>
+                            <input type="text" class="information__item-input" id="id" name="id" value="<%if (_selectPatient) {%> <%= (_selectPatient._id.toString()).slice(-10) %> <%}%>" disabled>
+                        </div>
+                        <div class="information__item">
+                            <label for="fullname" class="information__item-label">Họ và tên</label>
+                            <input type="text" class="information__item-input" id="fullname" name="fullname" value="<%if (_selectPatient) {%><%= _selectPatient.fullname %><%}%>" placeholder="Họ và tên" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="dateofbirth" class="information__item-label">Ngày sinh</label>
+                            <%if (_selectPatient) {%> 
+                                <% var patientDate = new Date(_selectPatient.dateofbirth) %>
+                                <% var onlyDate = patientDate.getFullYear() + '-' + ('0' + (patientDate.getMonth() + 1)).slice(-2) + '-' + ('0' + patientDate.getDate()).slice(-2) %>
+                                <% var onlyDate_2 = ('0' + patientDate.getDate()).slice(-2) + '/' + ('0' + (patientDate.getMonth() + 1)).slice(-2) + '/' + patientDate.getFullYear() %>
+                            <%}%>
+                            <input type="date" class="information__item-input" id="dateofbirth" name="dateofbirth" value="<%= onlyDate %>" placeholder="Ngày sinh" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="gender" class="information__item-label">Giới tính</label>
+                            <select id="gender" name="gender" class="information__item-input" required>
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="Nam" <%if (_selectPatient) {%> <% if(_selectPatient.gender == 'Nam') {%> selected <%}%> <%}%>>Nam</option>
+                                <option value="Nữ" <%if (_selectPatient) {%> <% if(_selectPatient.gender == 'Nữ') {%> selected <%}%> <%}%>>Nữ</option>
+                                <option value="Khác" <%if (_selectPatient) {%> <% if(_selectPatient.gender == 'Khác') {%> selected <%}%> <%}%>>Khác</option>
+                            </select>
+                        </div>
+                        <div class="information__item">
+                            <label for="phone" class="information__item-label">Số điện thoại</label>
+                            <input type="phone" class="information__item-input" id="phone" name="phone" value="<%if (_selectPatient) {%><%= _selectPatient.phone %><%}%>" placeholder="Số điện thoại" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="email" class="information__item-label">Email</label>
+                            <input type="email" class="information__item-input" id="email" name="email" value="<%if (_selectPatient) {%><%= _selectPatient.email %><%}%>" placeholder="Email" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="building" class="information__item-label">Địa chỉ</label>
+                            <div class="information__item-address">
+                                <div>
+                                    <input type="text" class="information__item-input" id="building" name="building" value="<%if (_selectPatient) {%><%= _selectPatient.address.building %><%}%>" placeholder="Số nhà, đường, khu phố" style="width:100%" required>
+                                </div>
+                                <div>
+                                    <select name="city" id="select-city" class="information__item-input" style="width:100%" required>
+                                        <option></option>
+                                        <% provinces.forEach(function(province, index){%>
+                                            <option value="<%= province.name %>"><%= province.name %></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select name="district" id="select-district" class="information__item-input" style="width:100%" required></select>
+                                </div>
+                                <div>
+                                    <select name="ward" id="select-ward" class="information__item-input" style="width:100%" required></select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="information__item">
-                        <label for="symptom" class="information__item-label">Triệu chứng</label>
-                        <textarea name="symptom" id="symptom" cols="30" rows="10" placeholder="Nhập..."></textarea>
+                </div>
+                <%if (_selectPatient) {%> 
+                    <div class="tab__control">
+                        <button type="button" class="control-btn yellow update-btn">
+                            <i class='bx bxs-save' ></i>
+                            <span>Cập nhật</span>
+                        </button>
+                        <a href="/close" class="control-btn red">
+                            <i class='bx bx-x'></i>
+                            <span>Đóng</span>
+                        </a>
                     </div>
-                    <div class="information__item">
-                        <label for="background-disease" class="information__item-label">Bệnh nền</label>
-                        <textarea name="background-disease" id="background-disease" cols="30" rows="10" placeholder="Nhập..."></textarea>
+                <%}%>
+            </form>
+            <div class="overlay patient-modal">
+                <div id="patient__list" class="patient__list">
+                    <div class="patient__list-title">
+                        <h3>Danh sách khách hàng</h3>
+                        <span><i class='bx bx-x-circle' ></i></span>
+                    </div>
+                    <div class="patient__list-heading">
+                        <div class="patient__list-search">
+                            <select id="patientSearch_home" class="appointment__heading-input" style="width: 30%;">
+                                <option></option>
+                                <% patients.forEach(function(patient, index){%>
+                                    <option value="<%= patient.fullname %>"><%= (patient._id.toString()).slice(-10) %> | <%= patient.fullname %> | <%= patient.dateofbirth.getFullYear() %></option>
+                                <%})%>
+                            </select>
+                            <button type="button" class="control-btn gray patient__list-refresh-btn">
+                                <i class='bx bx-refresh'></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="patient__list-content">
+                        <div class="patient__list-select">
+                            <div class="patient__list-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã hồ sơ</th>
+                                            <th>Họ và tên</th>
+                                            <th>Ngày sinh</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="tab__control">
-                <button class="control-btn update-btn">
-                    <i class='bx bxs-save' ></i>
-                    <span>Cập nhật</span>
-                </button>
-                <button class="control-btn print-btn">
-                    <i class='bx bxs-printer' ></i>
-                    <span>In phiếu</span>
-                </button>
-                <button class="control-btn close-btn">
-                    <i class='bx bx-x'></i>
-                    <span>Đóng</span>
-                </button>
             </div>
         </div>
 
@@ -131,7 +165,139 @@
             <div class="title">
                 Đăng ký khám
             </div>
+            <% if (_selectPatient) { %>
+                <div class="register__heading-control">
+                    <button type="button" class="control-btn green">
+                        <i class='bx bxs-calendar'></i>
+                        <span>Xem lịch trống</span>
+                    </button>
+                </div>
+            <%}%>
             <div class="tab-content">
+                <% if (_selectPatient) { %>
+                    <div class="register">
+                        <form id="register__form" method="POST" action="/create/appointment/<%= _selectPatient._id %>" class="register__form">
+                            <div class="register__heading">
+                                <div class="register__heading-item">
+                                    Mã hồ sơ: <span><%=(_selectPatient._id.toString()).slice(-10)%></span>
+                                </div>
+                                <div class="register__heading-item">
+                                    Tên khách hàng: <span><%=_selectPatient.fullname%></span>
+                                </div>
+                                <div class="register__heading-item">
+                                    Ngày sinh: <span><%= onlyDate_2 %></span>
+                                </div>
+                            </div>
+                            <div class="register__content">
+                                <div class="register__item">
+                                    <label for="dentist" class="register__item-label">Nha sĩ phụ trách:</label>
+                                    <input type="text" id="dentistSearch_home-value" name="dentist_id" style="display: none;">
+                                    <select id="dentistSearch_home" name="dentist" class="appointment__heading-input" style="width: 100%;">
+                                        <option></option>
+                                        <% dentists.forEach(function(dentist, index){%>
+                                            <option value="<%= dentist.fullname %>">Bs <%= dentist.fullname %></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="register__item">
+                                    <label for="service" class="register__item-label">Dịch vụ:</label>
+                                    <input type="text" id="serviceSearch_home-value" name="service_id" style="display: none;">
+                                    <select id="serviceSearch_home" name="service" class="appointment__heading-input" style="width: 100%;">
+                                        <option></option>
+                                        <% services.forEach(function(service, index){%>
+                                            <option value="<%= service.name %>"><%= service.name %></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="register__item">
+                                    <label class="register__item-label">Thời gian:</label>
+                                    <div>
+                                        <input type="date" class="register__item-input register__item-date" id="date" name="date" value="" required>
+                                        <input type="time" class="register__item-input register__item-time" id="time" name="time" min="07:00" max="21:00" value="" required>
+                                        <select id="period" name="period" class="register__item-input register__item-period">
+                                            <option value="00:30">30 phút</option>
+                                            <option value="01:00">60 phút</option>
+                                            <option value="01:30">90 phút</option>
+                                            <option value="02:00">120 phút</option>
+                                            <option value="02:30">150 phút</option>
+                                            <option value="03:00">180 phút</option>
+                                            <option value="03:30">210 phút</option>
+                                            <option value="04:00">240 phút</option>
+                                            <option value="04:30">270 phút</option>
+                                            <option value="05:00">300 phút</option>
+                                            <option value="05:30">330 phút</option>
+                                            <option value="06:00">360 phút</option>
+                                            <option value="06:30">390 phút</option>
+                                            <option value="07:00">420 phút</option>
+                                            <option value="07:30">450 phút</option>
+                                            <option value="08:00">480 phút</option>
+                                            <option value="08:30">510 phút</option>
+                                            <option value="09:00">540 phút</option>
+                                            <option value="09:30">570 phút</option>
+                                            <option value="10:00">600 phút</option>
+                                            <option value="10:30">630 phút</option>
+                                            <option value="11:00">660 phút</option>
+                                            <option value="11:30">690 phút</option>
+                                            <option value="12:00">720 phút</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="register__item">
+                                    <label for="symptom" class="register__item-label">Triệu chứng:</label>
+                                    <textarea name="symptom" id="symptom" class="" cols="30" rows="4"></textarea>
+                                </div>
+                                <div class="register__item">
+                                    <label for="note" class="register__item-label">Chú ý:</label>
+                                    <textarea name="note" id="note" class="" cols="30" rows="4"></textarea>
+                                </div>
+                                <div class="register__item">
+                                    <label for="status" class="register__item-label">Trạng thái hẹn:</label>
+                                    <div>
+                                        <div>
+                                            <input type="radio" name="status" id="status-not" class="register__item-input" value="Chưa đến" checked>
+                                            <label for="status-not" class="register__item-label">Chưa đến</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="status" id="status-came" class="register__item-input" value="Đã đến">
+                                            <label for="status-came" class="register__item-label">Đã đến</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="status" id="status-cancel" class="register__item-input" value="Đã hủy">
+                                            <label for="status-cancel" class="register__item-label">Đã hủy</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="register__control">
+                                <a href="/" class="control-btn red">
+                                    <i class='bx bx-x'></i>
+                                    <span>Hủy</span>
+                                </a>
+                                <button type="submit" class="control-btn green">
+                                    <i class='bx bxs-calendar-plus'></i>
+                                    <span>Đặt hẹn</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                <%} else {%>
+                    <div class="register">
+                        <div class="register__heading">
+                            Vui lòng chọn bệnh nhân trước khi đăng ký khám!
+                        </div>
+                    </div>
+                <%}%>
+            </div>
+            <div class="overlay emptyCalendar">
+                <div class="patient__list emptyCalendar__container">
+                    <div class="patient__list-title emptyCalendar__tittle">
+                        <h3>Lịch trong ngày</h3>
+                        <span><i class='bx bx-x-circle'></i></span>
+                    </div>
+                    <div class="emptyCalendar__content">
+                        <div id='empty__calendar'></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -145,3 +311,240 @@
     </div>
 
 </div>
+
+
+<%if (_selectPatient) {%> 
+    <% var patientID = _selectPatient._id %> 
+<%}%>
+
+<script>
+    //
+    var appointmentList = JSON.parse(`<%- JSON.stringify(appointments) %>`);
+    var dentistList = JSON.parse(`<%- JSON.stringify(dentists) %>`);
+    var patientList = JSON.parse(`<%- JSON.stringify(patients) %>`);
+    var serviceList = JSON.parse(`<%- JSON.stringify(services) %>`);
+    const selectBtn = document.querySelector(".select-btn");
+    const modal = document.querySelector(".patient-modal");
+    const closeBtn = document.querySelector(".patient__list-title > span");
+    const homeForm = document.querySelector('.home__form');
+    const updateBtn = document.querySelector('.update-btn');
+    const refreshBtn = document.querySelector('.patient__list-refresh-btn');
+
+    //Hàm render danh sách khách hàng
+    function renderPatient(listPatient){
+        const htmls = listPatient.map((patient, index) => {
+            var dateofbirth = new Date(patient.dateofbirth);
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${(patient._id.toString()).slice(-10)}</td>
+                    <td>
+                        <span>${patient.fullname}</span>
+                    </td>
+                    <td>
+                        ${('0' + dateofbirth.getDate()).slice(-2) + '-' + ('0' + (dateofbirth.getMonth() + 1)).slice(-2) + '-' +  dateofbirth.getFullYear()}
+                    </td>
+                    <td>
+                        <a href="/select/${patient._id}" class="control-btn blue">
+                            <i class='bx bxs-user-check'></i>
+                            <span>Chọn</span>
+                        </a>
+                    </td>
+                </tr>
+            `
+        })
+        document.querySelector('.patient__list-table table tbody').innerHTML = htmls.join('');
+    }
+
+    //Xử lý select2
+    $('#patientSearch_home').select2({
+        placeholder: "Mã hoặc tên",
+        allowClear: true,
+        templateSelection: function(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var search_value = state.text.split(' | ');
+            return search_value[1];
+        },
+    });
+
+    $('#dentistSearch_home').select2({
+        placeholder: "Nha sĩ",
+        allowClear: true,
+    });
+
+    $('#serviceSearch_home').select2({
+        placeholder: "Nội dung",
+        allowClear: true,
+    });
+
+    $('#patientSearch_home').on('change', function (e) {
+        var index = $("#patientSearch_home").prop('selectedIndex');
+        renderPatient([patientList[index - 1]]);
+    });
+
+    $('#patientSearch_home').on('select2:clear', function (e) {
+        renderPatient(patientList);
+    })
+
+    $('#dentistSearch_home').on('change', function (e) {
+        var index = $("#dentistSearch_home").prop('selectedIndex');
+        document.getElementById('dentistSearch_home-value').value = dentistList[index - 1]._id;
+    });
+
+    $('#dentistSearch_home').on('select2:clear', function (e) {
+        document.querySelector('#dentistSearch_home-value').value = '';
+    });
+    
+    $('#serviceSearch_home').on('change', function (e) {
+        var index = $("#serviceSearch_home").prop('selectedIndex');
+        document.getElementById('serviceSearch_home-value').value = serviceList[index - 1]._id;
+    });
+
+    $('#serviceSearch_home').on('select2:clear', function (e) {
+        document.querySelector('#serviceSearch_home-value').value = '';
+    });
+
+    //Xử lý modal
+    selectBtn.onclick = function() {
+        modal.style.display = "block";
+        renderPatient(patientList);
+    }
+
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    refreshBtn.onclick = function() {
+        renderPatient(patientList);
+        $('#patientSearch_home').val(null).trigger('change');
+    }
+
+    if(updateBtn){
+        updateBtn.onclick = function() {
+            homeForm.setAttribute('action', '/update/patient/' + `<%= patientID %>` + '?_method=PUT');
+            homeForm.submit();
+        }
+    }
+
+    //
+    var today = new Date();
+    document.querySelector(".register__item-date").value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+    //Xử lý xem lịch trống
+    /* Khai báo */
+    const empty__calendarBtn = document.querySelector('.register__heading-control > button');
+    const empty__calendarModal = document.querySelector('.emptyCalendar');
+    const empty__calendarClose = document.querySelector('.emptyCalendar__tittle > span');
+    var calendarE2 = document.getElementById('empty__calendar');
+    /* Hàm xử lý */
+    function addTimes(time0, time1) {
+        function timeToMins(time) {
+          var b = time.split(':');
+          return Number(b[0] * 60) + Number(b[1]);
+        };
+        function timeFromMins(mins) {
+            function z(n) {
+                if (n < 0) return ('-0' + (n).toString().slice(1));
+                return (n < 10 ? '0' : '') + n;
+            };
+            var h = (mins / 60 | 0);
+            var m = mins % 60;
+            return z(h) + ':' + z(m);
+        };
+        return timeFromMins(timeToMins(time0) + timeToMins(time1));
+    };
+    function subTimes(time0, time1) {
+        function timeToMins(time) {
+          var b = time.split(':');
+          return Number(b[0] * 60) + Number(b[1]);
+        };
+        function timeFromMins(mins) {
+            function z(n) {
+                if (n < 0) return ('-0' + (n).toString().slice(1));
+                return (n < 10 ? '0' : '') + n;
+            };
+            var h = (mins / 60 | 0);
+            var m = mins % 60;
+            return z(h) + ':' + z(m);
+        };
+        return timeFromMins(Math.abs(timeToMins(time0) - timeToMins(time1)));
+    };
+    function getDateFromHours(date, time) {
+      time = time.split(':');
+      let now = new Date(date);
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate(), ...time);
+    };
+    function addZero(i) {
+        if (i < 10) {i = "0" + i}
+        return i;
+    }
+
+    var calendar2 = new FullCalendar.Calendar(calendarE2, {
+        initialView: 'resourceTimeGridDay',
+        headerToolbar: {
+            left: 'title',
+            right: 'prev today next'
+        },
+        slotMinTime: '07:00:00',
+        slotMaxTime: '22:00:00',
+        height: 'auto',
+        selectable: true,
+        selectMirror: true,
+        selectOverlap: false,
+        resources: dentistList.map(function(event){
+            return {
+              id: event._id,
+              title: event.fullname,
+            }
+        }),
+        events: appointmentList.map(function(event){
+            return {
+              id: event._id,
+              resourceId: event.dentist_id,
+              title: patientList.find(x => x._id == event.patient_id).fullname,
+              start: new Date(getDateFromHours(event.date, event.time)),
+              end: new Date(getDateFromHours(event.date, addTimes(event.time, event.period))),
+            }
+        }),
+        select: function(info){
+            const dentist_input = document.querySelectorAll('#dentistSearch_home option');
+            const date_input = document.querySelector('.register__item-input.register__item-date');
+            const time_input = document.querySelector('.register__item-input.register__item-time');
+            const period_input = document.querySelectorAll('.register__item-input.register__item-period option');
+            var exam_date = new Date(info.startStr);       
+            var exam_date_end = new Date(info.endStr);    
+            
+            dentistList.forEach(function(x, index){
+                if(x._id == info.resource.id){
+                    $('#dentistSearch_home').prop('selectedIndex', index + 1).change();
+                }
+            })
+
+            date_input.value = exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate();
+
+            time_input.value = addZero(exam_date.getHours()) + ':' + addZero(exam_date.getMinutes());
+
+            period_input.forEach(function(opt){
+                if(opt.value == subTimes(addZero(exam_date.getHours()) + ':' + addZero(exam_date.getMinutes()), addZero(exam_date_end.getHours()) + ':' + addZero(exam_date_end.getMinutes()))){
+                    opt.selected = true;
+                } 
+            })
+
+            empty__calendarModal.style.display = 'none';
+        },
+    });
+    
+    empty__calendarBtn.onclick = function() {
+        empty__calendarModal.style.display = 'block';
+        calendar2.render();
+    }
+
+    empty__calendarClose.onclick = function() {
+        empty__calendarModal.style.display = 'none';
+    }
+
+</script>
+
+<%- include('../partials/select2') -%>

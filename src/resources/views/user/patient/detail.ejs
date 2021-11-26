@@ -1,0 +1,161 @@
+<div class="wrapper">
+    <div class="tabs">
+        <ul>
+            <li class="active">
+                <span class="text">Thông tin cơ bản</span>
+            </li>
+
+            <li>
+                <span class="text">Khám & điều trị</span>
+            </li>
+
+            <li>
+                <span class="text">Đơn thuốc</span>
+            </li>
+
+            <li>
+                <span class="text">Thanh toán</span>
+            </li>
+
+            <li>
+                <span class="text">Lịch sử</span>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="tab-wrap" style="display: block;">
+            <form id="patientList__form" method="POST" action="/patient_list/detail/update/<%= patient._id %>?_method=PUT" class="patientList__form" enctype="multipart/form-data">
+                <div class="tab__header">
+                    <div class="title">
+                        Thông tin cơ bản
+                    </div>
+                    <div class="tab__header-control">
+                        <button type="submit" class="control-btn yellow">
+                            <i class='bx bxs-save' ></i>
+                            <span>Cập nhật</span>
+                        </button>
+                        <a href="/patient_list" class="control-btn red">
+                            <i class='bx bx-x'></i>
+                            <span>Đóng</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="avatar">
+                        <div class="avatar__content">
+                            <img src="/img/user.png" alt="" class="avatar__content-img">
+                        </div>
+                        <button type="button" class="avatar__btn">
+                            <i class='bx bxs-camera-plus'></i>
+                            <span>Thêm ảnh</span>
+                        </button>
+                    </div>
+                    <input type="file" class="upload__file-img" id="image" name="image">
+                    <div class="information patient__information">
+                        <div class="information__item">
+                            <label for="id" class="information__item-label">Mã hồ sơ</label>
+                            <input type="text" class="information__item-input" id="id" name="id" value="<%= (patient._id.toString()).slice(-10) %>" disabled>
+                        </div>
+                        <div class="information__item">
+                            <label for="fullname" class="information__item-label">Họ và tên</label>
+                            <input type="text" class="information__item-input" id="fullname" name="fullname" value="<%= patient.fullname %>" placeholder="Họ và tên" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="dateofbirth" class="information__item-label">Ngày sinh</label>
+                            <% var patientDate = new Date(patient.dateofbirth) %>
+                            <% var onlyDate = patientDate.getFullYear() + '-' + ('0' + (patientDate.getMonth() + 1)).slice(-2) + '-' + ('0' + patientDate.getDate()).slice(-2) %>
+                            <input type="date" class="information__item-input" id="dateofbirth" name="dateofbirth" value="<%= onlyDate %>" placeholder="Ngày sinh" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="gender" class="information__item-label">Giới tính</label>
+                            <select id="gender" name="gender" class="information__item-input" required>
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="Nam" <% if(patient.gender == 'Nam') {%> selected <%}%>>Nam</option>
+                                <option value="Nữ" <% if(patient.gender == 'Nữ') {%> selected <%}%>>Nữ</option>
+                                <option value="Khác" <% if(patient.gender == 'Khác') {%> selected <%}%>>Khác</option>
+                            </select>
+                        </div>
+                        <div class="information__item">
+                            <label for="phone" class="information__item-label">Số điện thoại</label>
+                            <input type="phone" class="information__item-input" id="phone" name="phone" value="<%= patient.phone %>" placeholder="Số điện thoại" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="email" class="information__item-label">Email</label>
+                            <input type="email" class="information__item-input" id="email" name="email" value="<%= patient.email %>" placeholder="Email" required>
+                        </div>
+                        <div class="information__item">
+                            <label for="building" class="information__item-label">Địa chỉ</label>
+                            <div class="information__item-address">
+                                <div>
+                                    <input type="text" class="information__item-input" id="building" name="building" value="<%= patient.address.building %>" placeholder="Số nhà, đường, khu phố" style="width:100%" required>
+                                </div>
+                                <div>
+                                    <select name="city" id="select-city" class="information__item-input" style="width:100%" required>
+                                        <option></option>
+                                        <% provinces.forEach(function(province, index){%>
+                                            <option value="<%= province.name %>"><%= province.name %></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select name="district" id="select-district" class="information__item-input" style="width:100%" required></select>
+                                </div>
+                                <div>
+                                    <select name="ward" id="select-ward" class="information__item-input" style="width:100%" required></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="information__item">
+                            <label for="allergies" class="information__item-label">Dị ứng</label>
+                            <div class="box__group">
+                                <% allergies.forEach(function(allergie, index){%>
+                                    <div class="box__item">
+                                        <input type="checkbox" id="allergie-<%= index %>" name="allergies" class="box__item-input" value="<%= allergie.name %>" <%if (patient.allergies.includes(allergie.name)) {%>checked<%}%>>
+                                        <label for="allergie-<%= index %>" class="box__item-label"><%= allergie.name %></label>
+                                    </div>
+                                <%})%>
+                            </div>
+                        </div>
+                        <div class="information__item">
+                            <label for="background_diseases" class="information__item-label">Bệnh nền</label>
+                            <div class="box__group">
+                                <% backgroundDiseases.forEach(function(backgroundDisease, index){%>
+                                    <div class="box__item">
+                                        <input type="checkbox" id="backgroundDisease-<%= index %>" name="background_diseases" class="box__item-input" value="<%= backgroundDisease.name %>" <%if (patient.background_diseases.includes(backgroundDisease.name)) {%>checked<%}%>>
+                                        <label for="backgroundDisease-<%= index %>" class="box__item-label"><%= backgroundDisease.name %></label>
+                                    </div>
+                                <%})%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-wrap" style="display: none;">
+            <div class="title">
+                Khám & điều trị
+            </div>
+        </div>
+
+        <div class="tab-wrap" style="display: none;">
+            <div class="title">
+                Đơn thuốc
+            </div>
+        </div>
+
+        <div class="tab-wrap" style="display: none;">
+            <div class="title">
+                Thanh toán
+            </div>
+        </div>
+
+        <div class="tab-wrap" style="display: none;">
+            <div class="title">
+                Lịch sử
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/select2') -%>

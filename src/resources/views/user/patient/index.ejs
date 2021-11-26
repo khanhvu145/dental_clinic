@@ -1,0 +1,97 @@
+<div class="wrapper">
+    <div class="content patient">
+        <div class="patient__heading">
+            <div class="title patient__heading-title">
+                Danh sách khách hàng
+            </div>
+            <form method="GET" class="appointment__heading-filter patient__heading-filter">
+                <div class="appointment__heading-item patient__heading-item">
+                    <select id="patientSearch_home" class="appointment__heading-input" style="flex: 1;">
+                        <option></option>
+                        <% patients.forEach(function(patient, index){%>
+                            <option value="<%= patient.fullname %>"><%= (patient._id.toString()).slice(-10) %> | <%= patient.fullname %> | <%= patient.dateofbirth.getFullYear() %></option>
+                        <%})%>
+                    </select>
+                </div>
+                <div class="appointment__heading-item patient__heading-item">
+                    <a href="/patient_list" class="control-btn gray patient__refresh">
+                        <i class='bx bx-refresh'></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="patient__content">
+            <div class="appointment__content-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã hồ sơ</th>
+                            <th>Tên khách hàng</th>
+                            <th>Ngày sinh</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchBox = document.querySelector('.selected > input');
+    const optionsContainer = document.querySelector('.options-container');
+    const optionsList = document.querySelectorAll(".options-container .option");
+    var patientList = JSON.parse(`<%- JSON.stringify(patients) %>`);
+
+    function renderPatient(listPatient){
+        const htmls = listPatient.map((patient, index) => {
+            var dateofbirth = new Date(patient.dateofbirth);
+            return `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${(patient._id.toString()).slice(-10)}</td>
+                    <td>
+                        <span>${ patient.fullname }</span>
+                    </td>
+                    <td>
+                        ${('0' + dateofbirth.getDate()).slice(-2) + '-' + ('0' + (dateofbirth.getMonth() + 1)).slice(-2) + '-' +  dateofbirth.getFullYear()}
+                    </td>
+                    <td>
+                        <a href="/patient_list/detail/${patient._id}" class="control-btn yellow detail_petient-btn">
+                            <i class='bx bxs-edit'></i>
+                        </a>
+                        <a class="control-btn blue message_patient-btn">
+                            <i class='bx bxs-message-rounded-detail'></i>
+                        </a>
+                    </td>
+                </tr>
+            `
+        })
+        document.querySelector('.appointment__content-table table tbody').innerHTML = htmls.join('');
+    }
+
+    renderPatient(patientList);
+
+    $('#patientSearch_home').select2({
+        placeholder: "Mã hoặc tên",
+        allowClear: true,
+        templateSelection: function(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var search_value = state.text.split(' | ');
+            return search_value[1];
+        },
+    });
+
+    $('#patientSearch_home').on('change', function (e) {
+        var index = $("#patientSearch_home").prop('selectedIndex');
+        renderPatient([patientList[index - 1]]);
+    });
+
+    $('#patientSearch_home').on('select2:clear', function (e) {
+        renderPatient(patientList);
+    })
+</script>

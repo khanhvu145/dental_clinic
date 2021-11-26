@@ -225,8 +225,6 @@
     margin-top: 16px;
 }
 
-
-
 .profile__main-input:not(:disabled){
     background-color:transparent;
 }

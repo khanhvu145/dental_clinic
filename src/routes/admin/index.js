@@ -2,10 +2,8 @@ const dashboardRouter = require('./dashboard');
 const employeeRouter = require('./employee');
 const patientRouter = require('./patient');
 const accountRouter = require('./account');
-const authAdministration = require('../../app/middlewares/AuthAdministration');
 
 function route(app) {
-    app.use(authAdministration);
 
     app.use('/administration/myaccount', accountRouter);
     app.use('/administration/patient', patientRouter);

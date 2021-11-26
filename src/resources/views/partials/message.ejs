@@ -1,15 +1,19 @@
 <%if (_message) { %>
-    <div style="text-align: center" class="alert alert-<%= _message.type %> main__alert">
+    <div class="alert alert-<%= _message.type %> main__alert">
         <%= _message.content %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"="alert">&times;</button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"="alert"><i class='bx bx-x'></i></button>
     </div>
 <% } %>
 
 <script>
-    var alert = document.querySelector('.main__alert');
-    if(alert){
-        setTimeout(() => {
-            alert.style.display = 'none';
-        }, 3000);
+    const alert_mess = document.querySelector('.main__alert');
+    // if(alert_mess){
+    //     setTimeout(() => {
+    //         alert_mess.style.display = 'none';
+    //     }, 3000);
+    // }
+    const btn_close = document.querySelector('.btn-close > i');
+    btn_close.onclick = function(){
+        alert_mess.style.display = 'none';
     }
 </script>

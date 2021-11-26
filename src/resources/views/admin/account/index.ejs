@@ -1,11 +1,16 @@
 <main class="admin__main">
     <div class="admin__main-heading">
         <p> My accout </p>
-        <a href="" class="admin__main-btn admin__main-create btn-back">
-            <i class='bx bx-undo'></i>
-        </a>
+        <div>
+            <button type="button" class="admin__main-btn admin__main-edit btn-changePass">
+                <i class='bx bxs-key'></i>
+            </button>
+            <a href="" class="admin__main-btn admin__main-create btn-back">
+                <i class='bx bx-undo'></i>
+            </a>
+        </div>
     </div>
-    <form id="edit-employee" method="POST" action="/administration/myaccount/update/<%= employee._id %>?_method=PUT" class="profile__main" enctype="multipart/form-data">
+    <form id="edit-employee" method="POST" action="/administration/myaccount/update?_method=PUT" class="profile__main" enctype="multipart/form-data">
         <div class="profile__main-content">
             <div class="profile__main-left">
                 <div class="profile__main-avatar">
@@ -14,51 +19,150 @@
                         <i class='bx bxs-camera-plus'></i>
                     </span>
                 </div>
-            <button id="btn-save-profile" type="submit" class="admin__main-btn btn-action-form">
-                <i class='bx bxs-save'></i>
-            </button>
+                <button id="btn-save-profile" type="submit" class="admin__main-btn btn-action-form">
+                    <i class='bx bxs-save'></i>
+                </button>
             </div>
             <input type="file" class="upload__file-img" id="image" name="image">
             <div class="profile__main-info admin-main-info">
                 <div class="profile__main-item">
                     <label for="fullname" class="profile__main-label">Họ và tên</label>
-                    <input type="text" class="profile__main-input" id="fullname" name="fullname" value="<%= employee.fullname %>" required>
+                    <input type="text" class="profile__main-input" id="fullname" name="fullname" value="<%= employee.fullname %>" placeholder="Họ tên" required>
                 </div>
                 <div class="profile__main-item">
                     <label for="username" class="profile__main-label">Tên đăng nhập</label>
-                    <input type="text" class="profile__main-input" id="username" name="username" value="<%= employee.username %>"  required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="password" class="profile__main-label">Mật khẩu</label>
-                    <input type="password" class="profile__main-input" id="password" name="password" value="<%= employee.password %>" required>
-                    <span class="show-password"><i class='bx bxs-show'></i></span>
+                    <input type="text" class="profile__main-input" id="username" name="username" value="<%= employee.username %>" placeholder="Tên đăng nhập" disabled>
                 </div>
                 <div class="profile__main-item">
                     <label for="email" class="profile__main-label">Email</label>
-                    <input type="email" class="profile__main-input" id="email" name="email" value="<%= employee.email %>" required>
+                    <input type="email" class="profile__main-input" id="email" name="email" value="<%= employee.email %>" placeholder="Email" required>
                 </div>
                 <div class="profile__main-item">
                     <label for="phone" class="profile__main-label">Số điện thoại</label>
-                    <input type="phone" class="profile__main-input" id="phone" name="phone" value="<%= employee.phone %>" required>
+                    <input type="phone" class="profile__main-input" id="phone" name="phone" value="<%= employee.phone %>" placeholder="Số điện thoại" required>
                 </div>
                 <div class="profile__main-item">
-                    <label for="building" class="profile__main-label">Số nhà và đường</label>
-                    <input type="text" class="profile__main-input" id="building" name="building" value="<%= employee.address.building %>" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="ward" class="profile__main-label">Phường</label>
-                    <input type="text" class="profile__main-input" id="ward" name="ward" value="<%= employee.address.ward %>" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="district" class="profile__main-label">Quận</label>
-                    <input type="text" class="profile__main-input" id="district" name="district" value="<%= employee.address.district %>" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="city" class="profile__main-label">Thành phố</label>
-                    <input type="text" class="profile__main-input" id="city" name="city" value="<%= employee.address.city %>" required>
+                    <label for="building" class="profile__main-label">Địa chỉ</label>
+                    <div class="profile__main-item--address">
+                        <div>
+                            <input type="text" class="profile__main-input" id="building" name="building" value="<%= employee.address.building %>" placeholder="Số nhà, đường, khu phố" style="width:100%" required>
+                        </div>
+                        <div>
+                            <select name="city" id="select-city" class="profile__main-input" style="width:100%" required>
+                                <option></option>
+                                <% provinces.forEach(function(province, index){%>
+                                    <option value="<%= province.name %>"><%= province.name %></option>
+                                <%})%>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="district" id="select-district" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                        <div>
+                            <select name="ward" id="select-ward" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </form>
 </main>
 
+<div class="overlay changePass-modal">
+    <form method="POST" action="/administration/myaccount/change_password?_method=PUT" id="patient__list" class="admin__changePass-form">
+        <div class="admin__changePass-title">
+            <h3>Đổi mật khẩu</h3>
+            <i class='bx bx-x'></i>
+        </div>
+        <div class="admin__changePass-content">
+            <div class="profile__main-item admin__changePass-item">
+                <label for="currentPass" class="profile__main-label">Mật khẩu hiện tại:</label>
+                <input type="password" class="profile__main-input" id="currentPass" name="currentPass" required>
+                <span class="show-password"><i class='bx bxs-show'></i></span>
+            </div>
+            <div class="profile__main-item admin__changePass-item">
+                <label for="newPass" class="profile__main-label">Mật khẩu mới:</label>
+                <input type="password" class="profile__main-input" id="newPass" name="newPass" required>
+                <span class="show-password"><i class='bx bxs-show'></i></span>
+            </div>
+            <div class="profile__main-item admin__changePass-item">
+                <label for="confirmPass" class="profile__main-label">Xác nhận mật khẩu:</label>
+                <input type="password" class="profile__main-input" id="confirmPass" name="confirmPass" required>
+                <span class="show-password"><i class='bx bxs-show'></i></span>
+            </div>
+        </div>
+        <div class="admin__changePass-control">
+            <button type="submit" class="admin__main-btn btn-action-form changePass__btn">
+                <i class='bx bxs-save'></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const currentPass = document.querySelector("input[name='currentPass']");
+    const newPass = document.querySelector("input[name='newPass']");
+    const confirmPass = document.querySelector("input[name='confirmPass']");
+    const showBtn = document.querySelectorAll(".show-password > i");
+    const changePass_modal = document.querySelector(".changePass-modal");
+    const close_change_modal = document.querySelector(".admin__changePass-title > i");
+    const changePass_btn = document.querySelector('.btn-changePass');
+    const changePass_input = document.querySelectorAll('.admin__changePass-item > input');
+
+    changePass_btn.onclick = function(){
+        changePass_modal.style.display = "block";
+    }
+
+    close_change_modal.onclick = function(){
+        changePass_modal.style.display = "none";
+        changePass_input.forEach(function(item, index){
+            item.value = '';
+            if(item.getAttribute("type") == "text"){
+                item.setAttribute("type", "password");
+                showBtn[index].classList.remove("bxs-hide");
+                showBtn[index].classList.add("bxs-show");
+            }
+        });
+    }
+
+    showBtn[0].onclick = function(){
+        if(currentPass.getAttribute("type") == "password"){
+            currentPass.setAttribute("type", "text");
+            showBtn[0].classList.remove("bxs-show");
+            showBtn[0].classList.add("bxs-hide");
+        }
+        else{
+            currentPass.type = "password";
+            showBtn[0].classList.add("bxs-show");
+            showBtn[0].classList.remove("bxs-hide");
+        }
+    }
+
+    showBtn[1].onclick = function(){
+        if(newPass.getAttribute("type") == "password"){
+            newPass.setAttribute("type", "text");
+            showBtn[1].classList.remove("bxs-show");
+            showBtn[1].classList.add("bxs-hide");
+        }
+        else{
+            newPass.type = "password";
+            showBtn[1].classList.add("bxs-show");
+            showBtn[1].classList.remove("bxs-hide");
+        }
+    }
+
+    showBtn[2].onclick = function(){
+        if(confirmPass.getAttribute("type") == "password"){
+            confirmPass.setAttribute("type", "text");
+            showBtn[2].classList.remove("bxs-show");
+            showBtn[2].classList.add("bxs-hide");
+        }
+        else{
+            confirmPass.type = "password";
+            showBtn[2].classList.add("bxs-show");
+            showBtn[2].classList.remove("bxs-hide");
+        }
+    }
+</script>
+
+<%- include('../partials/select2_employee') -%>

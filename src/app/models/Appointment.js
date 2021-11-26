@@ -7,24 +7,39 @@ const Appointment = new Schema(
             type: Schema.Types.ObjectId, 
             required: true 
         },
-        dentist_name: { 
-            type: String, 
+        dentist_id: {
+            type: Schema.Types.ObjectId, 
+            required: true 
+        },
+        service_id: {
+            type: Schema.Types.ObjectId, 
             required: true 
         },
         date: { 
             type: Date, 
-            default: Date.now, 
             required: true 
         },
         time: { 
-            type: Date,
-            default: Date.now, 
+            type: String,
             required: true 
         },
-        content: { 
-            type: String, 
+        period: {
+            type: String,
+        },
+        symptom: {
+            type: String
+        },
+        note: {
+            type: String
+        },
+        status: {
+            type: String,
             required: true 
-        }
+        },
+        scheduler_id: {
+            type: Schema.Types.ObjectId, 
+            required: true
+        },
     },
     {
         timestamps: true,

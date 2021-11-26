@@ -52,7 +52,7 @@ body {
 .nav-link {
 	float: left;
 	text-align: center;
-	padding: 21px 10px;
+	padding: 21px 16px;
 	text-decoration: none;
 	font-size: 17px;
 	color: #ffffff;
@@ -69,6 +69,61 @@ body {
 
 .nav-right {
     margin-left: auto;
+}
+
+.nav-right > a {
+	display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    cursor: pointer;
+	text-decoration: none;
+	color: #ffffff;
+	padding: 12px 16px;
+}
+
+.nav-right > a::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: calc(100% - 16px);
+	height: calc(100% - 12px);
+	transform: translate(-50%, -50%);
+	background-color: transparent;
+	border-radius: 36px;
+	transition: all ease 0.5s;
+}
+
+.nav-right:hover > a::after{
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar__name{
+    margin: 0;
+    user-select: none;
+    font-weight: bold;
+}
+
+.navbar__img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+	background-color: #fff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.navbar__img > img{
+    width: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .logo {
@@ -305,20 +360,21 @@ a.sidebar-nav-link {
 	padding: 20px;
 }
 
-.tab-wrap .title {
+.title {
 	font-size: 20px;
-	margin-bottom: 15px;
 	font-weight: 600;
 	color: #000;
+	margin-bottom: 16px;
 }
 
 .tab-content{
 	display: flex;
     gap: 140px;
     margin-top: 32px;
-    padding: 0 96px 0 36px;
+    padding: 0 36px;
 }
 
+/*----- thông tin bệnh nhân ----- */
 .tab-wrap .avatar{
 	display: flex;
 	align-items: center;
@@ -404,9 +460,17 @@ a.sidebar-nav-link {
         "item1 item2"
         "item3 item4"
         "item5 item6"
+        "item7 item7";
+}
+
+.information.patient__information{
+	grid-template-areas: 
+        "item1 item2"
+        "item3 item4"
+        "item5 item6"
         "item7 item7"
-        "item8 item8"
-		"item9 item10";
+		"item8 item8"
+		"item9 item9";
 }
 
 .information__item:first-child{
@@ -445,10 +509,6 @@ a.sidebar-nav-link {
     grid-area: item9;
 }
 
-.information__item:nth-child(10){
-    grid-area: item10;
-}
-
 .information__item{
     display: flex;
     flex-direction: column;
@@ -457,6 +517,7 @@ a.sidebar-nav-link {
 .information__item-label{
     color: #3b3b3b;
     font-weight: bold;
+	margin-bottom: 16px;
 }
 
 .information__item > textarea,
@@ -466,12 +527,21 @@ a.sidebar-nav-link {
     padding: 12px 16px;
 	border: 1px solid #ccc;
     outline-color: rgba(82, 161, 157, 0.719);
-    margin-top: 16px;
 }
 
-.allergy__group{
+.information__item-input{
+	height: 42px;
+}
+
+.information__item-address{
+	display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 36px 48px;
+}
+
+.box__group{
 	margin-top: 16px;
-	height: 160px;
+	height: 240px;
     overflow-y: auto;
     background-color: #eee;
     border: 1px solid #ccc;
@@ -482,12 +552,15 @@ a.sidebar-nav-link {
 	grid-gap: 16px;
 }
 
-.allergy__item{
+.box__item{
 	display: flex;
-	align-items: center;
 }
 
-.allergy__item-label{
+.box__item-input{
+	margin-top: 4px;
+}
+
+.box__item-label{
 	font-size: 16px;
 	color: #3b3b3b;
 	margin-left: 8px;
@@ -501,7 +574,6 @@ a.sidebar-nav-link {
 }
 
 .control-btn{
-    margin-top: 16px;
 	display: inline-flex;
     text-align: center;
     justify-content: center;
@@ -512,21 +584,43 @@ a.sidebar-nav-link {
 	padding: 8px 12px;
 	cursor: pointer;
 	line-height: 1.3;
+	text-decoration: none;
+	font-size: 14px;
 }
 
-.select-btn{
+.control-btn:disabled{
+	opacity: 0.3;
+	pointer-events: none;
+}
+
+.control-btn.blue{
 	background-color: #0D6EFD;
     border: 2px solid #0D6EFD;
 }
 
-.create-btn{
+.control-btn.green{
 	background-color: #64dd17;
     border: 2px solid #64dd17;
 }
 
+.control-btn.yellow{
+	background-color: #FFCA2C;
+    border: 2px solid #FFCA2C;
+}
+
+.control-btn.red{
+	background-color: #DC3545;
+    border: 2px solid #DC3545;
+}
+
+.control-btn.gray{
+	background-color: #505050;
+    border: 2px solid #505050;
+}
+
 .control-btn > i {
 	font-size: 18px;
-	margin-right: 8px;
+	margin-right: 4px;
 }
 
 .control-btn:hover{
@@ -535,24 +629,644 @@ a.sidebar-nav-link {
 }
 
 .tab__control{
-	/* display: flex; */
+	display: flex;
 	justify-content: right;
-	margin-top: 16px;
 	gap: 8px;
+	margin-top: 32px;
+}
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+	z-index: 111;
+}
+
+.patient-modal{
 	display: none;
 }
 
-.update-btn{
-	background-color: #FFCA2C;
-    border: 2px solid #FFCA2C;
+.patient__list{
+	position: absolute;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -20%);
+    background-color: #fff;
+    width: 60%;
+	border-radius: 5px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	animation: modalShow ease 0.8s;
 }
 
-.print-btn{
-	background-color: #FFCA2C;
-    border: 2px solid #FFCA2C;
+.patient__list-title{
+    padding: 12px;
+	color: #3b3b3b;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.close-btn{
-	background-color: #DC3545;
-    border: 2px solid #DC3545;
+.patient__list-title > span > i{
+	font-size: 32px;
+	cursor: pointer;
+	padding: 4px;
+	opacity: 0.6;
+	transition: all 0.3s ease;
+}
+
+.patient__list-title > span > i:hover{
+	opacity: 1;
+}
+
+.patient__list-search{
+	padding: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.patient__list-input{
+    padding: 12px 16px;
+    border-radius: 8px;
+    width: 30%;
+    border: 1px solid #ccc;
+    outline-color: rgba(82, 161, 157, 0.719);
+}
+
+.patient__list-refresh-btn{
+	margin: 0;
+	margin-left: 4px;
+}
+
+.patient__list-refresh-btn > i{
+	margin: 0;
+}
+
+.patient__list-select{
+    padding: 16px;
+	padding-top: 0;
+}
+
+.patient__list-table{
+    overflow-y: auto;
+	height: 400px;
+	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.patient__list-table::-webkit-scrollbar { 
+    width: 6px;
+}
+
+.patient__list-table::-webkit-scrollbar-track {
+	background: #fff; 
+}
+.patient__list-table::-webkit-scrollbar-thumb {
+	background: #ccc;
+	border-radius: 5px;
+}
+.patient__list-table::-webkit-scrollbar-thumb:hover {
+	background: #000; 
+}
+
+.patient__list-table > table {
+    width: 100%;
+	border-collapse: collapse;
+}
+
+.patient__list-table > table th,
+.patient__list-table > table td {
+    padding: 12px;
+    vertical-align: middle;
+	border: 1px solid #f0f4f8;
+}
+
+.patient__list-table > table th{
+    color: #3b3b3b;
+    background-color: rgb(228, 228, 228);
+    font-weight: bold;
+}
+
+.patient__list-table > table td{
+	text-align: center;
+	color: #3b3b3b;
+}
+
+/*----- Đăngký ----- */
+.register__heading{
+	display: flex;
+	align-items: center;
+	gap: 40px;
+}
+
+.register__heading-item > span {
+	color: #3c763d;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.register{
+	min-width: 100%;
+}
+
+.register__content{
+	display: grid;
+	grid-gap: 36px 48px;
+	width: 60%;
+    grid-template-areas: 
+        "item1 item2"
+        "item3 item3"
+        "item4 item4"
+        "item5 item5"
+		"item6 item6";
+	margin-top: 36px;
+}
+
+.register__item:first-child{
+    grid-area: item1;
+}
+
+.register__item:nth-child(2){
+    grid-area: item2;
+}
+
+.register__item:nth-child(3){
+    grid-area: item3;
+}
+
+.register__item:nth-child(3) > div {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	gap: 16px;
+}
+
+.register__item:nth-child(3) > div > select,
+.register__item:nth-child(3) > div > input {
+	flex: 1;
+}
+
+.register__item:nth-child(4){
+    grid-area: item4;
+}
+
+.register__item:nth-child(5){
+    grid-area: item5;
+}
+
+.register__item:nth-child(6){
+    grid-area: item6;
+	margin-bottom: 36px;
+}
+
+.register__item:nth-child(6) > div {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 32px;
+}
+
+.register__item:nth-child(6) > div label {
+	font-weight: 400;
+}
+
+.register__item:nth-child(6) > div input {
+	height: 20px;
+	width: 20px;
+}
+
+.register__item{
+    display: flex;
+    flex-direction: column;
+}
+
+.register__item-label{
+    color: #3b3b3b;
+    font-weight: bold;
+	margin-bottom: 16px;
+}
+
+.register__item > textarea,
+.register__item-input{
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 12px 16px;
+	border: 1px solid #ccc;
+    outline-color: rgba(82, 161, 157, 0.719);
+}
+
+.register__item-input{
+	height: 42px;
+}
+
+.emptyCalendar{
+	display: none;
+}
+
+.emptyCalendar__container{
+	height: 80%;
+	width: 85%;
+	overflow: auto;
+}
+
+.emptyCalendar__container::-webkit-scrollbar{
+	width: 4px;
+}
+.emptyCalendar__container::-webkit-scrollbar-track {
+	background: #f1f1f1; 
+}
+
+.emptyCalendar__container::-webkit-scrollbar-thumb {
+	background: #888; 
+}
+
+.emptyCalendar__container::-webkit-scrollbar-thumb:hover {
+	background: #555; 
+}
+
+.emptyCalendar__content{
+	padding: 16px;
+}
+
+#empty__calendar .fc-col-header-cell.fc-resource{
+	padding: 12px 0;
+}
+
+#empty__calendar, #calendar{
+	color: #3b3b3b;
+}
+
+.fc-toolbar-title,
+.fc-col-header-cell-cushion {
+	font-weight: bold;
+}
+
+/*----- Lịch hẹn ----- */
+.appointment{
+	border-radius: 5px;
+	border: 1px solid #dddddd;
+}
+
+.appointment__heading-filter{
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.appointment__heading-item{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.appointment__heading-label{
+    font-weight: bold;
+	margin-right: 8px;
+}
+
+.appointment__heading-input{
+	border-radius: 5px;
+    padding: 8px 12px;
+	border: 1px solid #ccc;
+    outline-color: rgba(82, 161, 157, 0.719);
+	height: 42px;
+}
+
+.appointment__heading-search{
+	margin-left: 8px;
+	padding: 6px 10px;
+}
+
+.appointment__heading-refresh{
+	margin-left: 8px;
+	padding: 6px 10px;
+}
+
+.appointment__heading-refresh > i,
+.appointment__heading-search > i{
+	margin: 0;
+}
+
+.appointment__content-table{
+	border-radius: 8px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+	margin-top: 32px;
+	overflow: hidden;
+}
+
+.appointment__content-table > table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.appointment__content-table > table th,
+.appointment__content-table > table td {
+    padding: 16px;
+    text-align: center;
+    vertical-align: middle;
+	border: 1px solid #f0f4f8;
+	color: #3b3b3b;
+}
+
+.appointment__content-table > table th{
+    background-color: #f1f7fd;
+    font-weight: bold;
+}
+
+.appointment__content-table > table td > button{
+	margin: 0;
+}
+
+.appointment__content-table > table td > button > i{
+	margin: 0;
+}
+
+.detail_appointment-heading{
+	color: #3b3b3b;
+	font-weight: bold;
+	padding: 16px;
+	background-color: aliceblue;
+}
+
+.detail_appointment-heading > div{
+	display: flex;
+	align-items: center;
+	justify-content: right;
+	gap: 36px;
+}
+
+.detail_appointment-heading > div > div > input{
+	height: 20px;
+	width: 20px;
+}
+
+.detail_appointment-content{
+	padding: 16px;
+	display: grid;
+	grid-template-areas: 
+        "item1 item2"
+        "item3 item4"
+        "item5 item6"
+        "item7 item7"
+		"item8 item8"
+		"item9 item9";
+	grid-gap: 16px;
+	width: 100%;
+}
+
+.detail_appointment-item:first-child{
+	grid-area: item1;
+}
+
+.detail_appointment-item:nth-child(2){
+	grid-area: item2;
+}
+
+.detail_appointment-item:nth-child(3){
+	grid-area: item3;
+}
+
+.detail_appointment-item:nth-child(4){
+	grid-area: item4;
+}
+
+.detail_appointment-item:nth-child(5){
+	grid-area: item5;
+}
+
+.detail_appointment-item:nth-child(6){
+	grid-area: item6;
+}
+
+.detail_appointment-item:nth-child(7){
+	grid-area: item7;
+}
+
+.detail_appointment-item:nth-child(8){
+	grid-area: item8;
+}
+
+.detail_appointment-item:nth-child(9){
+	grid-area: item9;
+}
+
+.detail_appointment-item{
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.detail_appointment-item > span{
+	color: #3b3b3b;
+	font-weight: bold;
+	flex: 1;
+}
+
+.detail_appointment-item.flex-column{
+	flex-direction: column;
+	align-items: unset;
+}
+
+.detail_appointment-item > div{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+}
+
+.detail_appointment-item select,
+.detail_appointment-item textarea,
+.detail_appointment-item input {
+	border-radius: 5px;
+	color: #3b3b3b;
+	font-weight: bold;
+    padding: 12px 16px;
+	border: 1px solid #ccc;
+    outline-color: rgba(82, 161, 157, 0.719);
+}
+
+.detail_appointment_list{
+	min-width: 40%;
+	width: auto;
+}
+
+.detail_appointment-control{
+	padding: 16px;
+	border-top: 1px solid #ccc;
+	display: flex;
+	justify-content: right;
+}
+
+.detail_appointment-modal{
+	display: none;
+}
+
+.no-delete-btn{
+	margin-left: 8px;
+}
+
+.delete_appointment_list{
+	width: 30%;
+}
+
+.delete_appointment-content{
+	padding: 36px;
+	font-size: 18px;
+}
+
+.delete_appointment-modal{
+	display: none;
+}
+
+.status_form select{
+	color: #fff;
+	border: none;
+	outline: none;
+	text-align: center;
+}
+
+.status_form select option {
+	color: #000;
+	background-color: #fff;
+	text-align: left;
+}
+
+/*----- thông tin cá nhân ----- */
+.account__heading > p {
+	font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+
+.myaccount{
+	grid-template-areas: 
+        "item1 item2"
+        "item3 item4"
+        "item5 item5";
+}
+
+.changePass-modal{
+	display: none;
+}
+
+.changePass__list{
+	width: 40%;
+}
+
+.changePass-content{
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.changePass-control{
+	display: flex;
+	justify-content: right;
+	padding: 16px;
+}
+
+.changePass__item{
+	position: relative;
+}
+
+.changePass__item > .show-password{
+	position: absolute;
+    right: 16px;
+    top: 56%;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+    color: rgb(95, 95, 95);
+}
+
+.changePass__item input:valid ~ span{
+    display: block;
+}
+
+/*----- lịch làm việc ----- */
+#popup {
+    display: none;
+}
+
+.popup__content {
+	min-width: 40%;
+	width: auto;
+}
+
+.popup__control > .close-btn{
+	margin-left: 8px;
+}
+
+.select-box {
+	position: relative;
+	display: flex;
+	flex-direction: column !important;
+	align-items: flex-start !important;
+	gap: 0 !important;
+}
+
+.select-box .options-container {
+	max-height: 0;
+	width: 100%;
+	border: 1px solid #ccc;
+	opacity: 0;
+	transition: all 0.4s;
+	border-radius: 8px;
+	overflow: hidden;
+	order: 1;
+	position: absolute;
+    left: 0;
+    top: 36px;
+	background-color: #fff;
+}
+
+.selected {
+	position: relative;
+	order: 0;
+}
+
+.select-box .options-container.active {
+	max-height: 240px;
+	opacity: 1;
+	overflow-y: scroll;
+}
+
+.select-box .options-container::-webkit-scrollbar {
+	width: 4px;
+	background: #fff;
+	border-radius: 0 8px 8px 0;
+}
+  
+.select-box .options-container::-webkit-scrollbar-thumb {
+	background: rgb(129, 129, 129);
+	border-radius: 0 8px 8px 0;
+}
+
+.select-box .option {
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.select-box .option:hover {
+	background: #4cb60a;
+	color: #fff;
+}
+
+.select-box label {
+	cursor: pointer;
+}
+  
+.select-box .option .radio {
+	display: none;
+}
+
+.message_patient-btn > i,
+.detail_petient-btn > i{
+	margin: 0;
 }

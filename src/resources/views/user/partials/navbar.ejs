@@ -12,37 +12,21 @@
         </li>
     </ul>
 
-    <ul class="navbar-nav nav-right">
-        <li class="nav-item">
-            <a href="" class="nav-link">
-                <i class="fas fa-bell"></i>
+    <div class="navbar-nav nav-right">
+        <% if (_session.roleName == 'admin') { %>
+            <a href="/administration">
+                <p class="navbar__name">Bs <%= _session.user.fullname %></p>
+                <div class="navbar__img">
+                    <img src="<%= _session.user.image %>" alt="">
+                </div>
             </a>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link">
-                <i class="fas fa-user dropdown-toggle"  data-toggle="user-menu"></i>
+        <%} else { %>
+            <a href="/myaccount">
+                <p class="navbar__name">Bs <%= _session.user.fullname %></p>
+                <div class="navbar__img">
+                    <img src="<%= _session.user.image %>" alt="">
+                </div>
             </a>
-
-            <ul id="user-menu" class="dropdown-menu">
-                <li class="dropdown-menu-item">
-                    <a href="" class="dropdown-menu-link">
-                        <div>
-                            <i class="fas fa-user-tie"></i>
-                        </div>
-                        <span>Thông tin cá nhân</span>
-                    </a>
-                </li>
-
-                <li  class="dropdown-menu-item">
-                    <a href="#" class="dropdown-menu-link">
-                        <div>
-                            <i class="fas fa-sign-out-alt"></i>
-                        </div>
-                        <span>Đăng xuất</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+        <% } %>
+    </div>
 </div>

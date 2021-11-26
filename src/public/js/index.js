@@ -33,9 +33,6 @@ function openCloseDropdown(event) {
 	}
 }
 
-
-
-
 var tabs = document.querySelectorAll(".tabs ul li");
 var tab_wraps = document.querySelectorAll(".tab-wrap");
 
@@ -71,3 +68,5 @@ FILE_INPUT.addEventListener("change", function (e) {
 		AVATAR.setAttribute("src", reader.result);
 	};
 });
+
+

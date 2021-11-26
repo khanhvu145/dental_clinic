@@ -1,0 +1,453 @@
+<div class="wrapper">
+    <div class="content appointment">
+        <div class="appointment__heading">
+            <div class="title appointment__heading-title">
+                Danh sách lịch hẹn
+            </div>
+            <form method="GET" class="appointment__heading-filter">
+                <div class="appointment__heading-item">
+                    <label for="name" class="appointment__heading-label">Khách hàng:</label>
+                    <select id="patientSearch_home" class="appointment__heading-input" style="flex: 1;">
+                        <option></option>
+                        <% patients.forEach(function(patient, index){%>
+                            <option value="<%= patient.fullname %>"><%= (patient._id.toString()).slice(-10) %> | <%= patient.fullname %> | <%= patient.dateofbirth.getFullYear() %></option>
+                        <%})%>
+                    </select>
+                </div>
+                <div class="appointment__heading-item">
+                    <label for="dentist" class="appointment__heading-label">Nha sĩ:</label>
+                    <select id="dentistSearch_home" class="appointment__heading-input" style="flex: 1;">
+                        <option></option>
+                        <% dentists.forEach(function(dentist, index){%>
+                            <option value="<%= dentist.fullname %>">Bs <%= dentist.fullname %></option>
+                        <%})%>
+                    </select>
+                </div>
+                <div class="appointment__heading-item">
+                    <label class="appointment__heading-label">Ngày hẹn:</label>
+                    <% var today = new Date() %>
+                    <% var from_date = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2) %>
+                    <% var to_date = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2) %>
+                    <% if(filter_value.from_date && filter_value.to_date) { %>
+                        <% from_date = filter_value.from_date %>
+                        <% to_date = filter_value.to_date %>
+                    <%}%>
+                    <input type="date" class="appointment__heading-input appointment__heading-dateFrom" name="from_date" value="<%= from_date %>">
+                    <span style="margin: 0 16px;">---</span>
+                    <input type="date" class="appointment__heading-input appointment__heading-dateTo" name="to_date" value="<%= to_date %>">
+                </div>
+                <div class="appointment__heading-item">
+                    <button type="submit" class="control-btn green">
+                        <i class='bx bx-search'></i>
+                        Tìm
+                    </button>
+                    <a href="/appointment" class="control-btn gray appointment__heading-refresh">
+                        <i class='bx bx-refresh'></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="appointment__content">
+            <div class="appointment__content-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>Tên Khách hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Nha sĩ phụ trách</th>
+                            <th>Nội dung</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="overlay detail_appointment-modal">
+    <form method="POST" action="" id="patient__list" class="patient__list detail_appointment_list">
+        <div class="patient__list-title detail_appointment-title">
+            <h3>Thông tin lịch hẹn</h3>
+            <span>
+                <i class='bx bx-x-circle' ></i>
+            </span>
+        </div>
+        <div class="detail_appointment-heading">
+            <div>
+                <div>
+                    <input type="radio" name="status" id="status-not" class="detail_appointment-input" value="Chưa đến">
+                    <label for="status-not" class="detail_appointment-label">Chưa đến</label>
+                </div>
+                <div>
+                    <input type="radio" name="status" id="status-came" class="detail_appointment-input" value="Đã đến">
+                    <label for="status-came" class="detail_appointment-label">Đã đến</label>
+                </div>
+                <div>
+                    <input type="radio" name="status" id="status-cancel" class="detail_appointment-input" value="Hủy">
+                    <label for="status-cancel" class="detail_appointment-label">Đã hủy</label>
+                </div>
+            </div>
+        </div>
+        <div class="detail_appointment-content">
+            
+        </div>
+        <div class="detail_appointment-control">
+            <button type="submit" class="control-btn green">
+                <i class='bx bx-save'></i>
+                <span>Xác nhận</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="overlay delete_appointment-modal">
+    <form method="POST" action="" class="patient__list delete_appointment_list">
+        <div class="patient__list-title delete_appointment-title">
+            <h3>Xác nhận xóa lịch hẹn</h3>
+            <span>
+                <i class='bx bx-x-circle' ></i>
+            </span>
+        </div>
+        <div class="delete_appointment-content">
+            <span>Bạn có chắc muốn xóa lịch hẹn này?</span>
+        </div>
+        <div class="detail_appointment-control">
+            <button type="button" class="control-btn red confirm-delete-btn">Có</button>
+            <button type="button" class="control-btn gray no-delete-btn">Không</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    var appointmentList = JSON.parse(`<%- JSON.stringify(appointments) %>`);
+    var patientList = JSON.parse(`<%- JSON.stringify(patients) %>`);
+    var dentistList = JSON.parse(`<%- JSON.stringify(dentists) %>`);
+    var serviceList = JSON.parse(`<%- JSON.stringify(services) %>`);
+
+    //
+    //Hàm render danh sách lịch hẹn
+    function renderAppointment(listAppointment){
+        const htmls = listAppointment.map((appointment, index) => {
+            var exam_date = new Date(appointment.date);
+            return `
+            <tr>
+                <td style="display: flex; flex-direction: column; gap: 4px;">
+                    <span>${appointment.time}</span>
+                    <span>${('0' + exam_date.getDate()).slice(-2) + '/' + ('0' + (exam_date.getMonth() + 1)).slice(-2) + '/' + exam_date.getFullYear()}</span>
+                </td>
+                <td>${patientList.find(x => x._id == appointment.patient_id).fullname}</td>
+                <td>${(patientList.find(x => x._id == appointment.patient_id)).phone}</td>
+                <td>Bs ${(dentistList.find(x => x._id == appointment.dentist_id)).fullname}</td>
+                <td>${(serviceList.find(x => x._id == appointment.service_id)).name}</td>
+                <td>
+                    <form action="" method="POST" class="detail_appointment-item status_form" style="justify-content: center;">
+                        <select id="status" name="status">
+                            <option value="Chưa đến">Chưa đến</option>
+                            <option value="Đã đến">Đã đến</option>
+                            <option value="Đã hủy">Đã hủy</option>
+                        </select>
+                    </form>
+                </td>
+                <td>
+                    <button type="button" class="control-btn yellow appointment__content-edit" appointment_id="${appointment._id}">
+                        <i class='bx bx-calendar-edit'></i>
+                    </button>
+                    <button type="button" class="control-btn blue appointment__content-message">
+                        <i class='bx bxs-message-detail'></i>
+                    </button>
+                    <button type="button" class="control-btn red appointment__content-delete" appointment_id="${appointment._id}">
+                        <i class='bx bxs-trash'></i>
+                    </button>
+                </td>
+            </tr>
+            `
+        })
+        document.querySelector('.appointment__content-table table tbody').innerHTML = htmls.join('');
+    }
+
+    renderAppointment(appointmentList);
+
+    $('#patientSearch_home').select2({
+        placeholder: "Mã hoặc tên",
+        allowClear: true,
+        templateSelection: function(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var search_value = state.text.split(' | ');
+            return search_value[1];
+        },
+    });
+
+    $('#dentistSearch_home').select2({
+        placeholder: "Nha sĩ",
+        allowClear: true,
+    });
+
+    $('#patientSearch_home').on('change', function (e) {
+        var index_patient = $("#patientSearch_home").prop('selectedIndex');
+        var index_dentist = $("#dentistSearch_home").prop('selectedIndex');
+        var appointments = [];
+        appointmentList.forEach(function (x){
+            if(dentistList[index_dentist - 1]){
+                if(x.patient_id == patientList[index_patient - 1]._id && x.dentist_id == dentistList[index_dentist - 1]._id){
+                    appointments.push(x);
+                }
+            }
+            else{
+                if(x.patient_id == patientList[index_patient - 1]._id){
+                    appointments.push(x);
+                }
+            }
+        })
+        renderAppointment(appointments);
+        status_handle();
+    });
+
+    $('#patientSearch_home').on('select2:clear', function (e) {
+        var index_dentist = $("#dentistSearch_home").prop('selectedIndex');
+        if(dentistList[index_dentist - 1]){
+            var appointments = [];
+            appointmentList.forEach(function (x){
+                if(x.dentist_id == dentistList[index_dentist - 1]._id){
+                        appointments.push(x);
+                }
+            })
+            renderAppointment(appointments);
+        }
+        else{
+            renderAppointment(appointmentList);
+        }
+        status_handle();
+    });
+
+    $('#dentistSearch_home').on('change', function (e) {
+        var index_patient = $("#patientSearch_home").prop('selectedIndex');
+        var index_dentist = $("#dentistSearch_home").prop('selectedIndex');
+        var appointments = []
+        appointmentList.forEach(function (x){
+            if(patientList[index_patient - 1]){
+                if(x.patient_id == patientList[index_patient - 1]._id && x.dentist_id == dentistList[index_dentist - 1]._id){
+                    appointments.push(x);
+                }
+            }
+            else{
+                if(x.dentist_id == dentistList[index_dentist - 1]._id){
+                    appointments.push(x);
+                }
+            }
+        })
+        renderAppointment(appointments);
+        status_handle();
+    });
+
+    $('#dentistSearch_home').on('select2:clear', function (e) {
+        var index_patient = $("#patientSearch_home").prop('selectedIndex');
+        if(patientList[index_patient - 1]){
+            var appointments = [];
+            appointmentList.forEach(function (x){
+                if(x.patient_id == patientList[index_patient - 1]._id){
+                        appointments.push(x);
+                }
+            })
+            renderAppointment(appointments);
+        }
+        else{
+            renderAppointment(appointmentList);
+        }
+        status_handle();
+    });
+    
+
+    //
+    const edit_appointment_btn = document.querySelectorAll('.appointment__content-edit');
+    const appointment_modal = document.querySelector('.detail_appointment-modal');
+    const content = document.querySelector('.detail_appointment-content');
+    const close_appointment_btn = document.querySelector('.detail_appointment-title > span');
+    const detail_appointment_list = document.querySelector('.detail_appointment_list');
+    const delete_appointment_btn = document.querySelectorAll('.appointment__content-delete');
+    const delete_appointment_modal = document.querySelector('.delete_appointment-modal');
+    const close_delete_btn = document.querySelector('.delete_appointment-title > span');
+    const no_delete_btn = document.querySelector('.no-delete-btn');
+    const confirm_delete_btn = document.querySelector('.confirm-delete-btn');
+    const delete_appointment_form = document.querySelector('.delete_appointment_list');
+    var Appointment_ID;
+
+    function status_handle(){
+        const status_list = document.querySelectorAll('.status_form > select');
+        const status_form = document.querySelectorAll('.status_form');
+        status_list.forEach(function(status, index) {
+            var current_value = status.selectedIndex;
+            switch(appointmentList[index].status) {
+                case 'Chưa đến':
+                    status.style.backgroundColor = '#FF7168';
+                    status.querySelector('option[value="Chưa đến"]').selected = true;
+                    break;
+                case 'Đã đến':
+                    status.style.backgroundColor = '#36C590';
+                    status.querySelector('option[value="Đã đến"]').selected = true;
+                    break;
+                case 'Đã hủy':
+                    status.style.backgroundColor = '#B7B8B6';
+                    status.querySelector('option[value="Đã hủy"]').selected = true;
+                    break;
+                default:
+                    status.style.backgroundColor = '';
+                    break;
+            }
+            status.onchange = function(){
+                if (!confirm("Bạn có chắc với sự thay đổi?")) {
+                    status.selectedIndex = current_value;
+                }
+                else{
+                    current_value = status.selectedIndex;
+                    var status_id = appointmentList[index]._id;
+                    status_form[index].setAttribute('action', `/appointment/updateStatus/${status_id}?_method=PUT`);
+                    status_form[index].submit();
+                }
+            }
+        })
+    }
+
+    status_handle();
+    delete_appointment_btn.forEach(function(btn, index) {
+        btn.onclick = function(){
+            delete_appointment_modal.style.display = 'block';
+            Appointment_ID = btn.getAttribute('appointment_id');
+        }
+    });
+
+    close_delete_btn.onclick = function(){
+        delete_appointment_modal.style.display = 'none';
+    };
+
+    no_delete_btn.onclick = function(){
+        delete_appointment_modal.style.display = 'none';
+    }
+
+    confirm_delete_btn.onclick = function(){
+        delete_appointment_form.setAttribute('action', `/appointment/delete/${Appointment_ID}?_method=DELETE`);
+        delete_appointment_form.submit();
+    }
+
+    close_appointment_btn.onclick = function(){
+        appointment_modal.style.display = 'none';
+    }
+
+    edit_appointment_btn.forEach(function(btn, index){
+        btn.onclick = function(){
+            var appointment_id = btn.getAttribute('appointment_id');
+            var appointment_info = appointmentList.find(x => x._id == appointment_id);
+            var patient_info = patientList.find(x => x._id == appointment_info.patient_id);
+            var dentist_info = dentistList.find(x => x._id == appointment_info.dentist_id);
+            var service_info = serviceList.find(x => x._id == appointment_info.service_id);
+            var dateofbirth = new Date(patient_info.dateofbirth);
+            var exam_date = new Date(appointment_info.date);
+            appointment_modal.style.display = 'block';
+            detail_appointment_list.setAttribute('action', `/appointment/edit/${appointment_info._id}?_method=PUT`);
+            switch(appointment_info.status) {
+                case 'Chưa đến':
+                    document.getElementById('status-not').checked = true;
+                    break;
+                case 'Đã đến':
+                    document.getElementById('status-came').checked = true;
+                    break;
+                case 'Đã hủy':
+                    document.getElementById('status-cancel').checked = true;
+                    break;
+            }
+            content.innerHTML = `
+                <div class="detail_appointment-item">
+                    <p>Mã hồ sơ:</p>
+                    <span>${(patient_info._id.toString()).slice(-10)}</span>
+                </div>
+                <div class="detail_appointment-item">
+                    <p>Họ và tên:</p>
+                    <span>${patient_info.fullname}</span>
+                </div>
+                <div class="detail_appointment-item">
+                    <p>Ngày sinh:</p>
+                    <span>${dateofbirth.getDate() + '/' + (dateofbirth.getMonth() + 1) + '/' + dateofbirth.getFullYear()}</span>
+                </div>
+                <div class="detail_appointment-item">
+                    <p>Số điện thoại:</p>
+                    <span>${patient_info.phone}</span>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="dentist">Nha sĩ phụ trách:</label>
+                    <select id="dentist" name="dentist" required>
+                        <option value="">-- Chọn nha sĩ --</option>
+                        <% dentists.forEach(function(dentist, index){%>
+                            <option value="<%= dentist._id %>" >Bs <%= dentist.fullname %></option>
+                        <%})%>
+                    </select>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                  <label for="service">Điều trị:</label>
+                  <select id="service" name="service" required>
+                        <option value="">-- Chọn dịch vụ --</option>
+                        <% services.forEach(function(service, index){%>
+                            <option value="<%= service._id %>"><%= service.name %></option>
+                        <%})%>
+                    </select>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label>Thời gian:</label>
+                    <div>
+                      <input type="date" id="date" name="date" value="${exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate()}">
+                      <input type="time" id="time" name="time" min="07:00" max="21:00" value="${appointment_info.time}">
+                      <select id="period" name="period">
+                            <option value="00:30">30 phút</option>
+                            <option value="01:00">60 phút</option>
+                            <option value="01:30">90 phút</option>
+                            <option value="02:00">120 phút</option>
+                            <option value="02:30">150 phút</option>
+                            <option value="03:00">180 phút</option>
+                            <option value="03:30">210 phút</option>
+                            <option value="04:00">240 phút</option>
+                            <option value="04:30">270 phút</option>
+                            <option value="05:00">300 phút</option>
+                            <option value="05:30">330 phút</option>
+                            <option value="06:00">360 phút</option>
+                            <option value="06:30">390 phút</option>
+                            <option value="07:00">420 phút</option>
+                            <option value="07:30">450 phút</option>
+                            <option value="08:00">480 phút</option>
+                            <option value="08:30">510 phút</option>
+                            <option value="09:00">540 phút</option>
+                            <option value="09:30">570 phút</option>
+                            <option value="10:00">600 phút</option>
+                            <option value="10:30">630 phút</option>
+                            <option value="11:00">660 phút</option>
+                            <option value="11:30">690 phút</option>
+                            <option value="12:00">720 phút</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="symptom">Triệu chứng:</label>
+                    <textarea name="symptom" id="symptom" rows="3">${appointment_info.symptom}</textarea>
+                </div>
+                <div class="detail_appointment-item flex-column">
+                    <label for="note">Chú ý:</label>
+                    <textarea name="note" id="note" rows="3">${appointment_info.note}</textarea>
+                </div>
+            `
+            document.querySelectorAll('#dentist option').forEach(function(x){
+                if(x.value == dentist_info._id) x.selected = true;
+            });
+            document.querySelectorAll('#service option').forEach(function(x){
+                if(x.value == service_info._id) x.selected = true;
+            });
+            document.querySelectorAll('#period option').forEach(function(x){
+                if(x.value == appointment_info.period) x.selected = true;
+            });
+        }
+    })
+ 
+</script>

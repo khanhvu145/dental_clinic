@@ -53,12 +53,31 @@
                     <input type="email" class="profile__main-input" id="email" name="email" value="<%= patient.email %>" >
                 </div>
                 <div class="profile__main-item">
-                    <label for="address" class="profile__main-label">Địa chỉ</label>
-                    <input type="text" class="profile__main-input" id="address" name="address" value="<%= patient.address %>">
+                    <label for="building" class="profile__main-label">Địa chỉ</label>
+                    <div class="profile__main-item--address">
+                        <div>
+                            <input type="text" class="profile__main-input" id="building" name="building" value="<%= patient.address.building %>" placeholder="Số nhà, đường, khu phố" style="width:100%" required>
+                        </div>
+                        <div>
+                            <select name="city" id="select-city" class="profile__main-input" style="width:100%" required>
+                                <option></option>
+                                <% provinces.forEach(function(province, index){%>
+                                    <option value="<%= province.name %>"><%= province.name %></option>
+                                <%})%>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="district" id="select-district" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                        <div>
+                            <select name="ward" id="select-ward" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </form>
 </main>
 
+<%- include('../partials/select2_patient') -%>
 

@@ -26,12 +26,7 @@
                 </div>
                 <div class="profile__main-item">
                     <label for="username" class="profile__main-label">Tên đăng nhập</label>
-                    <input type="text" class="profile__main-input" id="username" name="username" value="<%= employee.username %>"  required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="password" class="profile__main-label">Mật khẩu</label>
-                    <input type="password" class="profile__main-input" id="password" name="password" value="<%= employee.password %>" required>
-                    <span class="show-password"><i class='bx bxs-show'></i></span>
+                    <input type="text" class="profile__main-input" id="username" name="username" value="<%= employee.username %>"  required disabled>
                 </div>
                 <div class="profile__main-item">
                     <label for="email" class="profile__main-label">Email</label>
@@ -42,32 +37,41 @@
                     <input type="phone" class="profile__main-input" id="phone" name="phone" value="<%= employee.phone %>" required>
                 </div>
                 <div class="profile__main-item">
-                    <label for="building" class="profile__main-label">Số nhà và đường</label>
-                    <input type="text" class="profile__main-input" id="building" name="building" value="<%= employee.address.building %>" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="ward" class="profile__main-label">Phường</label>
-                    <input type="text" class="profile__main-input" id="ward" name="ward" value="<%= employee.address.ward %>" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="district" class="profile__main-label">Quận</label>
-                    <input type="text" class="profile__main-input" id="district" name="district" value="<%= employee.address.district %>" required>
-                </div>
-                <div class="profile__main-item">
-                    <label for="city" class="profile__main-label">Thành phố</label>
-                    <input type="text" class="profile__main-input" id="city" name="city" value="<%= employee.address.city %>" required>
+                    <label for="building" class="profile__main-label">Địa chỉ</label>
+                    <div class="profile__main-item--address">
+                        <div>
+                            <input type="text" class="profile__main-input" id="building" name="building" value="<%= employee.address.building %>" placeholder="Số nhà, đường, khu phố" style="width:100%" required>
+                        </div>
+                        <div>
+                            <select name="city" id="select-city" class="profile__main-input" style="width:100%" required>
+                                <option></option>
+                                <% provinces.forEach(function(province, index){%>
+                                    <option value="<%= province.name %>"><%= province.name %></option>
+                                <%})%>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="district" id="select-district" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                        <div>
+                            <select name="ward" id="select-ward" class="profile__main-input" style="width:100%" required></select>
+                        </div>
+                    </div>
                 </div>
                 <div class="profile__main-item">
                     <label for="role" class="profile__main-label">Quyền</label>
                     <select id="role" name="role" class="profile__main-input" required>
                         <option value="">-- Chọn quyền --</option>
-                        <option value="admin" <% if(role.name == 'admin') {%> selected <%}%>>Admin</option>
-                        <option value="dentist" <% if(role.name == 'dentist') {%> selected <%}%>>Nha sĩ</option>
-                        <option value="receptionist" <% if(role.name == 'receptionist') {%> selected <%}%>>Lễ tân</option>
+                        <% var role_name = (roles.find(x => x._id.equals(employee.role))).name %>
+                        <option value="admin" <% if(role_name == 'admin') {%> selected <%}%>>Admin</option>
+                        <option value="Nha sĩ" <% if(role_name == 'Nha sĩ') {%> selected <%}%>>Nha sĩ</option>
+                        <option value="Lễ tân" <% if(role_name == 'Lễ tân') {%> selected <%}%>>Lễ tân</option>
                     </select>
                 </div>
             </div>
         </div>
     </form>
 </main>
+
+<%- include('../partials/select2_employee') -%>
 

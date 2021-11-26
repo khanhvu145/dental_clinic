@@ -12,7 +12,7 @@ const Service = new Schema(
             required: true 
         },
         price: { 
-            type: Double,  
+            type: Schema.Types.Number,    
             required: true 
         }
     },

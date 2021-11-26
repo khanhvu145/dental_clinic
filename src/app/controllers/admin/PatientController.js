@@ -1,8 +1,13 @@
 const Patient = require('../../models/Patient');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const { mongooseToObject } = require('../../../util/mongoose');
 const { mutipleMongooseToObject } = require('../../../util/mongoose');
+
+let provinces = axios.get('https://provinces.open-api.vn/api/p/');
+let districts = axios.get('https://provinces.open-api.vn/api/d/');
+let wards = axios.get('https://provinces.open-api.vn/api/w/');
 
 class PatientController{
     //[GET] /patient
@@ -27,18 +32,37 @@ class PatientController{
 
     //[GET]: /patient/details/:id/
     details(req, res, next) {
-        Patient.findOne({ _id: req.params.id })
-            .then((patient) => {
+        let patient = Patient.findOne({ _id: req.params.id });
+        Promise.all([patient, provinces, districts, wards])
+            .then(([patient, provinces, districts, wards]) => {
                 res.render('admin/patient/details', {
                     patient: mongooseToObject(patient),
+                    provinces: provinces.data,
+                    districts: districts.data,
+                    wards: wards.data,
                 });
             })
-            .catch(next); 
+            .catch(next);
     }
 
     //[GET]: /patient/create
     create(req, res, next) {
-        res.render('admin/patient/create');
+        Promise.all([provinces, districts, wards])
+            .then(([provinces, districts, wards]) => {
+                res.render('admin/patient/create', {
+                    provinces: provinces.data,
+                    districts: districts.data,
+                    wards: wards.data,
+                    patient: {
+                        address: {
+                            city: '',
+                            district: '',
+                            ward: ''
+                        }
+                    },
+                });
+            })
+            .catch(next);
     }
 
     //[POST]: /employee/store
@@ -62,7 +86,10 @@ class PatientController{
             gender: formData.gender,  
             phone: formData.phone,
             email: formData.email,
-            address: formData.address, 
+            "address.building": formData.building,
+            "address.ward": formData.ward,
+            "address.district": formData.district,
+            "address.city": formData.city,
             image: imgPath,
         })
             .then(() => {
@@ -77,10 +104,14 @@ class PatientController{
 
     //[GET]: /patient/edit
     edit(req, res, next) {
-        Patient.findOne({ _id: req.params.id })
-            .then((patient) => {
+        let patient = Patient.findOne({ _id: req.params.id });
+        Promise.all([patient, provinces, districts, wards])
+            .then(([patient, provinces, districts, wards]) => {
                 res.render('admin/patient/edit', {
                     patient: mongooseToObject(patient),
+                    provinces: provinces.data,
+                    districts: districts.data,
+                    wards: wards.data,
                 });
             })
             .catch(next);
@@ -112,7 +143,10 @@ class PatientController{
                         gender: formData.gender,  
                         phone: formData.phone,
                         email: formData.email,
-                        address: formData.address, 
+                        "address.building": formData.building,
+                        "address.ward": formData.ward,
+                        "address.district": formData.district,
+                        "address.city": formData.city,
                         image: imgPath
                     }
                 }
@@ -158,7 +192,7 @@ class PatientController{
     search(req, res, next) {
         var keyword = req.query.keyword;
         let page = 1;
-        Patient.find({fullname: { $regex: keyword }})
+        Patient.find({fullname: { $regex: keyword, $options:"$i" }})
             .then((patients) => {
                 res.render('admin/patient/index', {
                     patients: mutipleMongooseToObject(patients),

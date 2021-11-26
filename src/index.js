@@ -49,6 +49,10 @@ app.use(function (req, res, next) {
     delete req.session.message;
     next();
 })
+app.use(function (req, res, next) {
+    res.locals._selectPatient = req.session.selectPatient;
+    next();
+});
 
 //Setup view engine
 app.use(ejsLayouts);

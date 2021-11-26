@@ -1,0 +1,83 @@
+<script>
+    var provinces = JSON.parse(`<%- JSON.stringify(provinces) %>`);
+    var districts= JSON.parse(`<%- JSON.stringify(districts) %>`);
+    var wards = JSON.parse(`<%- JSON.stringify(wards) %>`);
+
+    $('#select-city').select2({
+        placeholder: "Tỉnh/Thành phố",
+        allowClear: true,
+    });
+
+    $('#select-district').select2({
+        placeholder: "Quận/Huyện",
+        allowClear: true,
+    });
+    
+    $('#select-ward').select2({
+        placeholder: "Phường/Xã/Ấp",
+        allowClear: true,
+    });
+
+    function renderDistrict(listDistrict){
+        const htmls = listDistrict.map((district, index) => {
+            return `
+                <option value="${district.name}">${district.name}</option>
+            `
+        })
+        htmls.unshift('<option></option>');
+        document.querySelector('#select-district').innerHTML = htmls.join('');
+    }
+
+    function renderWard(listWard){
+        const htmls = listWard.map((ward, index) => {
+            return `
+                <option value="${ward.name}">${ward.name}</option>
+            `
+        })
+        htmls.unshift('<option></option>');
+        document.querySelector('#select-ward').innerHTML = htmls.join('');
+    }
+
+    var districtsNew;
+
+    $('#select-city').on('change', function (e) {
+        var index = $("#select-city").prop('selectedIndex');
+        var districtList = [];
+        districts.forEach(function(district){
+            if(district.province_code == provinces[index - 1].code){
+                districtList.push(district);
+            }
+        })
+        districtsNew = districtList;
+        renderDistrict(districtList);
+        renderWard([]);
+    });
+
+    $('#select-district').on('change', function (e) {
+        var index = $("#select-district").prop('selectedIndex');
+        var wardList = [];
+        wards.forEach(function(ward){
+            if(ward.district_code == districtsNew[index - 1].code){
+                wardList.push(ward);
+            }
+        })
+        renderWard(wardList);
+    });
+
+    $('#select-city').on('select2:clear', function (e) {
+        renderDistrict([]);
+        renderWard([]);
+    });
+
+    $('#select-district').on('select2:clear', function (e) {
+        renderWard([]);
+    });
+
+    $('#select-city').val('<%= patient.address.city %>'); 
+    $('#select-city').trigger('change');
+    $('#select-district').val('<%= patient.address.district %>'); 
+    $('#select-district').trigger('change');
+    $('#select-ward').val('<%= patient.address.ward %>'); 
+    $('#select-ward').trigger('change');
+
+</script>
