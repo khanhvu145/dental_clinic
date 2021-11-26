@@ -57,8 +57,8 @@ app.use(function (req, res, next) {
 
 //Setup view engine
 app.use(ejsLayouts);
+app.set('views', path.join(__dirname, '/resources/views'));
 app.set("view engine","ejs");
-app.set('views', path.join(__dirname, 'resources\\views'));
 
 //Route
 auth_route(app);
