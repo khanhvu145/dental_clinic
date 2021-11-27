@@ -686,7 +686,7 @@ body{
 .select2-container .select2-selection--single {
     border-radius: 6px;
     font-size: 16px;
-    color: var(--font-color);
+    background-color: var(--background-color) !important;
     padding: 8px 16px;
     border: none;
     border-bottom: 2px solid rgba(82, 161, 157, 0.719);
@@ -694,6 +694,16 @@ body{
     margin-top: 16px;
 }
 
+.select2-selection__rendered {
+    line-height: 38px !important;
+    color: var(--font-color) !important;
+    font-size: 14px !important;
+}
+
 .select2-selection__arrow {
     height: 72px !important;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single{
+    background-color: #efefef4d !important;
 }
