@@ -206,7 +206,7 @@
             }
         })
         renderAppointment(appointments);
-        status_handle();
+        appointment_handle();
     });
 
     $('#patientSearch_home').on('select2:clear', function (e) {
@@ -223,7 +223,7 @@
         else{
             renderAppointment(appointmentList);
         }
-        status_handle();
+        appointment_handle();
     });
 
     $('#dentistSearch_home').on('change', function (e) {
@@ -243,7 +243,7 @@
             }
         })
         renderAppointment(appointments);
-        status_handle();
+        appointment_handle();
     });
 
     $('#dentistSearch_home').on('select2:clear', function (e) {
@@ -260,62 +260,28 @@
         else{
             renderAppointment(appointmentList);
         }
-        status_handle();
+        appointment_handle();
     });
     
 
-    //
-    const edit_appointment_btn = document.querySelectorAll('.appointment__content-edit');
-    const appointment_modal = document.querySelector('.detail_appointment-modal');
-    const content = document.querySelector('.detail_appointment-content');
-    const close_appointment_btn = document.querySelector('.detail_appointment-title > span');
-    const detail_appointment_list = document.querySelector('.detail_appointment_list');
-    const delete_appointment_btn = document.querySelectorAll('.appointment__content-delete');
-    const delete_appointment_modal = document.querySelector('.delete_appointment-modal');
-    const close_delete_btn = document.querySelector('.delete_appointment-title > span');
-    const no_delete_btn = document.querySelector('.no-delete-btn');
-    const confirm_delete_btn = document.querySelector('.confirm-delete-btn');
-    const delete_appointment_form = document.querySelector('.delete_appointment_list');
-    var Appointment_ID;
-
-    function status_handle(){
+    //Xử lý các chức năng
+    function appointment_handle(){
+        const edit_appointment_btn = document.querySelectorAll('.appointment__content-edit');
+        const appointment_modal = document.querySelector('.detail_appointment-modal');
+        const content = document.querySelector('.detail_appointment-content');
+        const close_appointment_btn = document.querySelector('.detail_appointment-title > span');
+        const detail_appointment_list = document.querySelector('.detail_appointment_list');
+        const delete_appointment_btn = document.querySelectorAll('.appointment__content-delete');
+        const delete_appointment_modal = document.querySelector('.delete_appointment-modal');
+        const close_delete_btn = document.querySelector('.delete_appointment-title > span');
+        const no_delete_btn = document.querySelector('.no-delete-btn');
+        const confirm_delete_btn = document.querySelector('.confirm-delete-btn');
+        const delete_appointment_form = document.querySelector('.delete_appointment_list');
+        var Appointment_ID;
         const status_list = document.querySelectorAll('.status_form > select');
         const status_form = document.querySelectorAll('.status_form');
-        status_list.forEach(function(status, index) {
-            var current_value = status.selectedIndex;
-            switch(appointmentList[index].status) {
-                case 'Chưa đến':
-                    status.style.backgroundColor = '#FF7168';
-                    status.querySelector('option[value="Chưa đến"]').selected = true;
-                    break;
-                case 'Đã đến':
-                    status.style.backgroundColor = '#36C590';
-                    status.querySelector('option[value="Đã đến"]').selected = true;
-                    break;
-                case 'Đã hủy':
-                    status.style.backgroundColor = '#B7B8B6';
-                    status.querySelector('option[value="Đã hủy"]').selected = true;
-                    break;
-                default:
-                    status.style.backgroundColor = '';
-                    break;
-            }
-            status.onchange = function(){
-                if (!confirm("Bạn có chắc với sự thay đổi?")) {
-                    status.selectedIndex = current_value;
-                }
-                else{
-                    current_value = status.selectedIndex;
-                    var status_id = appointmentList[index]._id;
-                    status_form[index].setAttribute('action', `/appointment/updateStatus/${status_id}?_method=PUT`);
-                    status_form[index].submit();
-                }
-            }
-        })
-    }
 
-    status_handle();
-    delete_appointment_btn.forEach(function(btn, index) {
+        delete_appointment_btn.forEach(function(btn, index) {
         btn.onclick = function(){
             delete_appointment_modal.style.display = 'block';
             Appointment_ID = btn.getAttribute('appointment_id');
@@ -449,5 +415,40 @@
             });
         }
     })
+        
+        status_list.forEach(function(status, index) {
+            var current_value = status.selectedIndex;
+            switch(appointmentList[index].status) {
+                case 'Chưa đến':
+                    status.style.backgroundColor = '#FF7168';
+                    status.querySelector('option[value="Chưa đến"]').selected = true;
+                    break;
+                case 'Đã đến':
+                    status.style.backgroundColor = '#36C590';
+                    status.querySelector('option[value="Đã đến"]').selected = true;
+                    break;
+                case 'Đã hủy':
+                    status.style.backgroundColor = '#B7B8B6';
+                    status.querySelector('option[value="Đã hủy"]').selected = true;
+                    break;
+                default:
+                    status.style.backgroundColor = '';
+                    break;
+            }
+            status.onchange = function(){
+                if (!confirm("Bạn có chắc với sự thay đổi?")) {
+                    status.selectedIndex = current_value;
+                }
+                else{
+                    current_value = status.selectedIndex;
+                    var status_id = appointmentList[index]._id;
+                    status_form[index].setAttribute('action', `/appointment/updateStatus/${status_id}?_method=PUT`);
+                    status_form[index].submit();
+                }
+            }
+        })
+    }
+
+    appointment_handle();
  
 </script>
