@@ -171,19 +171,19 @@ class EmployeeController{
         let imgBase64;
         let mimetype;
         let imgPath;
-        if(file){
-            mimetype = file.mimetype;
-            imgBase64 = fs.readFileSync(file.path).toString('base64');
-            imgPath = `data:${mimetype};base64,${imgBase64}`;
-        }
-        else {
-            Employee.findOne({ _id: req.params.id }, function(err, employee){
-                imgPath = employee.image;
-            })
-        }
 
         Role.findOne({name: formData.role}, function(err, role){
             roleId = role._id;
+            if(file){
+                mimetype = file.mimetype;
+                imgBase64 = fs.readFileSync(file.path).toString('base64');
+                imgPath = `data:${mimetype};base64,${imgBase64}`;
+            }
+            else {
+                Employee.findOne({ _id: req.params.id }, function(err, employee){
+                    imgPath = employee.image;
+                })
+            }
             Employee.updateOne(
                 { _id: req.params.id }, 
                 { 
