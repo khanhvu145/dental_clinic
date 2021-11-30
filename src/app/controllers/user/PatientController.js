@@ -30,7 +30,10 @@ class PatientController{
                     patients_filter: mutipleMongooseToObject(patients_filter),
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     detail(req, res, next) {
@@ -50,7 +53,10 @@ class PatientController{
                     wards: wards.data,
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     update(req, res, next) {
@@ -95,7 +101,10 @@ class PatientController{
                     };
                     res.redirect('back');
                 })
-                .catch(next);
+                .catch(() => {
+                    res.status(500).send('Cập nhật thông tin thất bại.Lỗi rồi!!');
+                    next();
+                }); 
         })
     }
 }

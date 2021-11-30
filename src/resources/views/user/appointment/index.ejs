@@ -281,140 +281,145 @@
         const status_list = document.querySelectorAll('.status_form > select');
         const status_form = document.querySelectorAll('.status_form');
 
-        delete_appointment_btn.forEach(function(btn, index) {
-        btn.onclick = function(){
-            delete_appointment_modal.style.display = 'block';
-            Appointment_ID = btn.getAttribute('appointment_id');
+        function addZero(i) {
+            if (i < 10) {i = "0" + i}
+            return i;
         }
-    });
 
-    close_delete_btn.onclick = function(){
-        delete_appointment_modal.style.display = 'none';
-    };
-
-    no_delete_btn.onclick = function(){
-        delete_appointment_modal.style.display = 'none';
-    }
-
-    confirm_delete_btn.onclick = function(){
-        delete_appointment_form.setAttribute('action', `/appointment/delete/${Appointment_ID}?_method=DELETE`);
-        delete_appointment_form.submit();
-    }
-
-    close_appointment_btn.onclick = function(){
-        appointment_modal.style.display = 'none';
-    }
-
-    edit_appointment_btn.forEach(function(btn, index){
-        btn.onclick = function(){
-            var appointment_id = btn.getAttribute('appointment_id');
-            var appointment_info = appointmentList.find(x => x._id == appointment_id);
-            var patient_info = patientList.find(x => x._id == appointment_info.patient_id);
-            var dentist_info = dentistList.find(x => x._id == appointment_info.dentist_id);
-            var service_info = serviceList.find(x => x._id == appointment_info.service_id);
-            var dateofbirth = new Date(patient_info.dateofbirth);
-            var exam_date = new Date(appointment_info.date);
-            appointment_modal.style.display = 'block';
-            detail_appointment_list.setAttribute('action', `/appointment/edit/${appointment_info._id}?_method=PUT`);
-            switch(appointment_info.status) {
-                case 'Chưa đến':
-                    document.getElementById('status-not').checked = true;
-                    break;
-                case 'Đã đến':
-                    document.getElementById('status-came').checked = true;
-                    break;
-                case 'Đã hủy':
-                    document.getElementById('status-cancel').checked = true;
-                    break;
+        delete_appointment_btn.forEach(function(btn, index) {
+            btn.onclick = function(){
+                delete_appointment_modal.style.display = 'block';
+                Appointment_ID = btn.getAttribute('appointment_id');
             }
-            content.innerHTML = `
-                <div class="detail_appointment-item">
-                    <p>Mã hồ sơ:</p>
-                    <span>${(patient_info._id.toString()).slice(-10)}</span>
-                </div>
-                <div class="detail_appointment-item">
-                    <p>Họ và tên:</p>
-                    <span>${patient_info.fullname}</span>
-                </div>
-                <div class="detail_appointment-item">
-                    <p>Ngày sinh:</p>
-                    <span>${dateofbirth.getDate() + '/' + (dateofbirth.getMonth() + 1) + '/' + dateofbirth.getFullYear()}</span>
-                </div>
-                <div class="detail_appointment-item">
-                    <p>Số điện thoại:</p>
-                    <span>${patient_info.phone}</span>
-                </div>
-                <div class="detail_appointment-item flex-column">
-                    <label for="dentist">Nha sĩ phụ trách:</label>
-                    <select id="dentist" name="dentist" required>
-                        <option value="">-- Chọn nha sĩ --</option>
-                        <% dentists.forEach(function(dentist, index){%>
-                            <option value="<%= dentist._id %>" >Bs <%= dentist.fullname %></option>
-                        <%})%>
-                    </select>
-                </div>
-                <div class="detail_appointment-item flex-column">
-                  <label for="service">Điều trị:</label>
-                  <select id="service" name="service" required>
-                        <option value="">-- Chọn dịch vụ --</option>
-                        <% services.forEach(function(service, index){%>
-                            <option value="<%= service._id %>"><%= service.name %></option>
-                        <%})%>
-                    </select>
-                </div>
-                <div class="detail_appointment-item flex-column">
-                    <label>Thời gian:</label>
-                    <div>
-                      <input type="date" id="date" name="date" value="${exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate()}">
-                      <input type="time" id="time" name="time" min="07:00" max="21:00" value="${appointment_info.time}">
-                      <select id="period" name="period">
-                            <option value="00:30">30 phút</option>
-                            <option value="01:00">60 phút</option>
-                            <option value="01:30">90 phút</option>
-                            <option value="02:00">120 phút</option>
-                            <option value="02:30">150 phút</option>
-                            <option value="03:00">180 phút</option>
-                            <option value="03:30">210 phút</option>
-                            <option value="04:00">240 phút</option>
-                            <option value="04:30">270 phút</option>
-                            <option value="05:00">300 phút</option>
-                            <option value="05:30">330 phút</option>
-                            <option value="06:00">360 phút</option>
-                            <option value="06:30">390 phút</option>
-                            <option value="07:00">420 phút</option>
-                            <option value="07:30">450 phút</option>
-                            <option value="08:00">480 phút</option>
-                            <option value="08:30">510 phút</option>
-                            <option value="09:00">540 phút</option>
-                            <option value="09:30">570 phút</option>
-                            <option value="10:00">600 phút</option>
-                            <option value="10:30">630 phút</option>
-                            <option value="11:00">660 phút</option>
-                            <option value="11:30">690 phút</option>
-                            <option value="12:00">720 phút</option>
+        });
+
+        close_delete_btn.onclick = function(){
+            delete_appointment_modal.style.display = 'none';
+        };
+
+        no_delete_btn.onclick = function(){
+            delete_appointment_modal.style.display = 'none';
+        }
+
+        confirm_delete_btn.onclick = function(){
+            delete_appointment_form.setAttribute('action', `/appointment/delete/${Appointment_ID}?_method=DELETE`);
+            delete_appointment_form.submit();
+        }
+
+        close_appointment_btn.onclick = function(){
+            appointment_modal.style.display = 'none';
+        }
+
+        edit_appointment_btn.forEach(function(btn, index){
+            btn.onclick = function(){
+                var appointment_id = btn.getAttribute('appointment_id');
+                var appointment_info = appointmentList.find(x => x._id == appointment_id);
+                var patient_info = patientList.find(x => x._id == appointment_info.patient_id);
+                var dentist_info = dentistList.find(x => x._id == appointment_info.dentist_id);
+                var service_info = serviceList.find(x => x._id == appointment_info.service_id);
+                var dateofbirth = new Date(patient_info.dateofbirth);
+                var exam_date = new Date(appointment_info.date);
+                appointment_modal.style.display = 'block';
+                detail_appointment_list.setAttribute('action', `/appointment/edit/${appointment_info._id}?_method=PUT`);
+                switch(appointment_info.status) {
+                    case 'Chưa đến':
+                        document.getElementById('status-not').checked = true;
+                        break;
+                    case 'Đã đến':
+                        document.getElementById('status-came').checked = true;
+                        break;
+                    case 'Đã hủy':
+                        document.getElementById('status-cancel').checked = true;
+                        break;
+                }
+                content.innerHTML = `
+                    <div class="detail_appointment-item">
+                        <p>Mã hồ sơ:</p>
+                        <span>${(patient_info._id.toString()).slice(-10)}</span>
+                    </div>
+                    <div class="detail_appointment-item">
+                        <p>Họ và tên:</p>
+                        <span>${patient_info.fullname}</span>
+                    </div>
+                    <div class="detail_appointment-item">
+                        <p>Ngày sinh:</p>
+                        <span>${('0' + dateofbirth.getDate()).slice(-2) + '/' + ('0' + (dateofbirth.getMonth() + 1)).slice(-2) + '/' + dateofbirth.getFullYear()}</span>
+                    </div>
+                    <div class="detail_appointment-item">
+                        <p>Số điện thoại:</p>
+                        <span>${patient_info.phone}</span>
+                    </div>
+                    <div class="detail_appointment-item flex-column">
+                        <label for="dentist">Nha sĩ phụ trách:</label>
+                        <select id="dentist" name="dentist" required>
+                            <option value="">-- Chọn nha sĩ --</option>
+                            <% dentists.forEach(function(dentist, index){%>
+                                <option value="<%= dentist._id %>" >Bs <%= dentist.fullname %></option>
+                            <%})%>
                         </select>
                     </div>
-                </div>
-                <div class="detail_appointment-item flex-column">
-                    <label for="symptom">Triệu chứng:</label>
-                    <textarea name="symptom" id="symptom" rows="3">${appointment_info.symptom}</textarea>
-                </div>
-                <div class="detail_appointment-item flex-column">
-                    <label for="note">Chú ý:</label>
-                    <textarea name="note" id="note" rows="3">${appointment_info.note}</textarea>
-                </div>
-            `
-            document.querySelectorAll('#dentist option').forEach(function(x){
-                if(x.value == dentist_info._id) x.selected = true;
-            });
-            document.querySelectorAll('#service option').forEach(function(x){
-                if(x.value == service_info._id) x.selected = true;
-            });
-            document.querySelectorAll('#period option').forEach(function(x){
-                if(x.value == appointment_info.period) x.selected = true;
-            });
-        }
-    })
+                    <div class="detail_appointment-item flex-column">
+                    <label for="service">Điều trị:</label>
+                    <select id="service" name="service" required>
+                            <option value="">-- Chọn dịch vụ --</option>
+                            <% services.forEach(function(service, index){%>
+                                <option value="<%= service._id %>"><%= service.name %></option>
+                            <%})%>
+                        </select>
+                    </div>
+                    <div class="detail_appointment-item flex-column">
+                        <label>Thời gian:</label>
+                        <div>
+                        <input type="date" id="date" name="date" value="${exam_date.getFullYear() + '-' + ('0' + (exam_date.getMonth() + 1)).slice(-2) + '-' + ('0' + exam_date.getDate()).slice(-2)}">
+                        <input type="time" id="time" name="time" min="07:00" max="21:00" value="${appointment_info.time}">
+                        <select id="period" name="period">
+                                <option value="00:30">30 phút</option>
+                                <option value="01:00">60 phút</option>
+                                <option value="01:30">90 phút</option>
+                                <option value="02:00">120 phút</option>
+                                <option value="02:30">150 phút</option>
+                                <option value="03:00">180 phút</option>
+                                <option value="03:30">210 phút</option>
+                                <option value="04:00">240 phút</option>
+                                <option value="04:30">270 phút</option>
+                                <option value="05:00">300 phút</option>
+                                <option value="05:30">330 phút</option>
+                                <option value="06:00">360 phút</option>
+                                <option value="06:30">390 phút</option>
+                                <option value="07:00">420 phút</option>
+                                <option value="07:30">450 phút</option>
+                                <option value="08:00">480 phút</option>
+                                <option value="08:30">510 phút</option>
+                                <option value="09:00">540 phút</option>
+                                <option value="09:30">570 phút</option>
+                                <option value="10:00">600 phút</option>
+                                <option value="10:30">630 phút</option>
+                                <option value="11:00">660 phút</option>
+                                <option value="11:30">690 phút</option>
+                                <option value="12:00">720 phút</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="detail_appointment-item flex-column">
+                        <label for="symptom">Triệu chứng:</label>
+                        <textarea name="symptom" id="symptom" rows="3">${appointment_info.symptom}</textarea>
+                    </div>
+                    <div class="detail_appointment-item flex-column">
+                        <label for="note">Chú ý:</label>
+                        <textarea name="note" id="note" rows="3">${appointment_info.note}</textarea>
+                    </div>
+                `
+                document.querySelectorAll('#dentist option').forEach(function(x){
+                    if(x.value == dentist_info._id) x.selected = true;
+                });
+                document.querySelectorAll('#service option').forEach(function(x){
+                    if(x.value == service_info._id) x.selected = true;
+                });
+                document.querySelectorAll('#period option').forEach(function(x){
+                    if(x.value == appointment_info.period) x.selected = true;
+                });
+            }
+        })
         
         status_list.forEach(function(status, index) {
             var current_value = status.selectedIndex;

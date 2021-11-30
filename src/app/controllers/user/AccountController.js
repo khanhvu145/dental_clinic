@@ -25,12 +25,16 @@ class AccountController{
                     wards: wards.data,
                 });
             })
-            .catch(next);   
+            .catch(() => {
+                res.status(500).send('Truy cập trang thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     changePassword(req, res, next){
         Employee.findOneAndUpdate({ _id: req.session.user._id }, {new: true}, function(err, employee) {
             if(err){
+                res.status(404).send('Yêu cầu đổi mật khẩu thất bại.Lỗi rồi!!');
                 next();
             }
             else{
@@ -111,7 +115,10 @@ class AccountController{
                     };
                     res.redirect('back');
                 })
-                .catch(next);
+                .catch(() => {
+                    res.status(500).send('Cập nhật không thành công.Lỗi rồi!!');
+                    next();
+                });
         })
     }
 

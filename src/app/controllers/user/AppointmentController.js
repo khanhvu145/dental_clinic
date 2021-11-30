@@ -38,7 +38,10 @@ class AppointmentController{
                     filter_value: filter_value,
                 })
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     edit(req, res, next){
@@ -133,7 +136,10 @@ class AppointmentController{
                 };
                 res.redirect('back');
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Yêu cầu cập nhật thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     delete(req, res, next){
@@ -145,7 +151,10 @@ class AppointmentController{
                 };
                 res.redirect('back');
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Yêu cầu xóa thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 }
 

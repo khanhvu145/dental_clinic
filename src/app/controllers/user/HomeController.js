@@ -24,13 +24,7 @@ class HomeController{
         let dentists = Employee.find({role: '615b01158ee0220383521b5f'});
         let services = Service.find({});
         let patients = Patient.find({});
-        var patient = {
-            address: {
-                city: '',
-                district: '',
-                ward: ''
-            }
-        };
+        var patient = {address: {city: '', district: '', ward: ''}};
 
         if(req.session.selectPatient){
             patient = {
@@ -58,7 +52,10 @@ class HomeController{
                     patient: patient,
                 })
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            });
     }
 
     select(req, res, next) {
@@ -67,7 +64,10 @@ class HomeController{
                 req.session.selectPatient = patient;
                 res.redirect('/');
             })
-            .catch(next); 
+            .catch(() => {
+                res.status(500).send('Chọn khách hàng không thành công.Lỗi rồi!!');
+                next();
+            });
     }
 
     close(req, res, next) {
@@ -125,7 +125,10 @@ class HomeController{
                     };
                     res.redirect('back');
                 })
-                .catch(next);
+                .catch(() => {
+                    res.status(500).send('Cập nhật thông tin thất bại.Lỗi rồi!!');
+                    next();
+                });
         })
     }
 
@@ -167,9 +170,15 @@ class HomeController{
                         };
                         res.redirect('back');
                     })
-                    .catch(next)
+                    .catch(() => {
+                        res.status(500).send('Không tìm thấy dữ liệu.Lỗi rồi!!');
+                        next();
+                    }); 
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Thêm thông tin thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     createAppointment(req, res, next) {

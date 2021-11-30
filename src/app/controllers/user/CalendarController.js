@@ -25,7 +25,10 @@ class CalendarController{
                         services: mutipleMongooseToObject(services),
                     })
                 })
-                .catch(next);
+                .catch(() => {
+                    res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                    next();
+                }); 
     }
 
     edit(req, res, next){

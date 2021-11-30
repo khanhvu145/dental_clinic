@@ -73,7 +73,7 @@
       var time_start = addZero(info.event.start.getHours()) + ':' + addZero(info.event.start.getMinutes());
       var time_end = addZero(info.event.end.getHours()) + ':' + addZero(info.event.end.getMinutes());
       var exam_date = new Date(info.event.start);
-      input[0].setAttribute('value', exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate());
+      input[0].setAttribute('value', exam_date.getFullYear() + '-' + addZero((exam_date.getMonth() + 1)) + '-' + addZero(exam_date.getDate()));
       input[1].setAttribute('value', time_start);
       input[2].setAttribute('value', subTimes(time_start, time_end));
       form_calendar.setAttribute('action', `/mycalendar/edit/${info.event.id}?_method=PUT`);
@@ -84,8 +84,6 @@
     var patientList = JSON.parse(`<%- JSON.stringify(patients) %>`);
     var dentistList = JSON.parse(`<%- JSON.stringify(dentists) %>`);
     var serviceList = JSON.parse(`<%- JSON.stringify(services) %>`);
-
-
     
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -150,7 +148,7 @@
                 <div class="detail_appointment-item flex-column">
                     <label>Thời gian:</label>
                     <div>
-                      <input type="text" id="date" name="date" value="${exam_date.getDate() + '/' + (exam_date.getMonth() + 1) + '/' + exam_date.getFullYear()}" disabled>
+                      <input type="text" id="date" name="date" value="${('0' + exam_date.getDate()).slice(-2) + '/' + ('0' + (exam_date.getMonth() + 1)).slice(-2) + '/' + exam_date.getFullYear()}" disabled>
                       <input type="time" id="time" name="time" value="${appointment_info.time}" disabled>
                       <span>-</span>
                       <input type="time" id="period" name="period" value="${addTimes(appointment_info.time, appointment_info.period)}" disabled>
@@ -233,7 +231,7 @@
                 <div class="detail_appointment-item flex-column">
                     <label>Thời gian:</label>
                     <div>
-                      <input type="date" id="date" name="date" value="${exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate()}" required>
+                      <input type="date" id="date" name="date" value="${exam_date.getFullYear() + '-' + ('0' + (exam_date.getMonth() + 1)).slice(-2) + '-' + ('0' + exam_date.getDate()).slice(-2)}" required>
                       <input type="time" id="time" name="timeStart" min="07:00" max="21:00" value="${addZero(exam_date.getHours()) + ':' + addZero(exam_date.getMinutes())}" required>
                       <input type="time" id="time" name="timeEnd" min="07:00" max="21:00" value="${addZero(exam_date_end.getHours()) + ':' + addZero(exam_date_end.getMinutes())}" required>
                     </div>

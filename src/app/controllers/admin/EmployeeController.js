@@ -41,7 +41,10 @@ class EmployeeController{
                     });
                 });
             })
-            .catch(next);        
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            });       
     }
 
     //[GET]: /patient/search
@@ -80,7 +83,10 @@ class EmployeeController{
                     wards: wards.data,
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[GET]: /employee/create
@@ -100,7 +106,10 @@ class EmployeeController{
                     },
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[POST]: /employee/store
@@ -141,9 +150,15 @@ class EmployeeController{
                         };
                         res.redirect('/administration/employee');
                     })
-                    .catch(next);
+                    .catch(() => {
+                        res.status(500).send('Thêm thông tin thất bại.Lỗi rồi!!');
+                        next();
+                    }); 
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Không tìm thấy dữ liệu.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[GET]: /employee/edit
@@ -160,7 +175,10 @@ class EmployeeController{
                     wards: wards.data,
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[PUT]: /employee/edit/update/:id/
@@ -174,40 +192,43 @@ class EmployeeController{
 
         Role.findOne({name: formData.role}, function(err, role){
             roleId = role._id;
-            if(file){
-                mimetype = file.mimetype;
-                imgBase64 = fs.readFileSync(file.path).toString('base64');
-                imgPath = `data:${mimetype};base64,${imgBase64}`;
-            }
-            else {
-                Employee.findOne({ _id: req.params.id }, function(err, employee){
-                    imgPath = employee.image;
-                })
-            }
-            Employee.updateOne(
-                { _id: req.params.id }, 
-                { 
-                    $set: { 
-                        fullname: formData.fullname, 
-                        email: formData.email,
-                        phone: formData.phone,
-                        role: roleId,
-                        image: imgPath,
-                        "address.building": formData.building,
-                        "address.ward": formData.ward,
-                        "address.district": formData.district,
-                        "address.city": formData.city,
-                    }
+            Employee.findOne({ _id: req.params.id }, function(err, employee){
+                if(file){
+                    mimetype = file.mimetype;
+                    imgBase64 = fs.readFileSync(file.path).toString('base64');
+                    imgPath = `data:${mimetype};base64,${imgBase64}`;
                 }
-            )
-                .then(() => {
-                    req.session.message = {
-                        type: 'success',
-                        content: 'Chỉnh sửa thông tin thành công.'
-                    };
-                    res.redirect('/administration/employee')
-                })
-                .catch(next);
+                else {
+                    imgPath = employee.image;
+                }
+                Employee.updateOne(
+                    { _id: req.params.id }, 
+                    { 
+                        $set: { 
+                            fullname: formData.fullname, 
+                            email: formData.email,
+                            phone: formData.phone,
+                            role: roleId,
+                            image: imgPath,
+                            "address.building": formData.building,
+                            "address.ward": formData.ward,
+                            "address.district": formData.district,
+                            "address.city": formData.city,
+                        }
+                    }
+                )
+                    .then(() => {
+                        req.session.message = {
+                            type: 'success',
+                            content: 'Chỉnh sửa thông tin thành công.'
+                        };
+                        res.redirect('/administration/employee')
+                    })
+                    .catch(() => {
+                        res.status(500).send('Cập nhật thông tin thất bại.Lỗi rồi!!');
+                        next();
+                    }); 
+            })
         })
     }
 
@@ -221,7 +242,10 @@ class EmployeeController{
                 };
                 res.redirect('back')
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Yêu cầu xóa thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[DELETE]: /employee/destroy/:id/
@@ -234,7 +258,10 @@ class EmployeeController{
                 };
                 res.redirect('back');
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Yêu cầu xóa thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 }
 

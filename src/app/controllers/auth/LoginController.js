@@ -38,7 +38,10 @@ class LoginController{
                     res.redirect('/login');
                 }
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Lỗi máy chủ đăng nhập!!');
+                next();
+            });
     }
 }
 

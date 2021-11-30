@@ -522,7 +522,7 @@
                 }
             })
 
-            date_input.value = exam_date.getFullYear() + '-' + (exam_date.getMonth() + 1) + '-' + exam_date.getDate();
+            date_input.value = exam_date.getFullYear() + '-' + ('0' + (exam_date.getMonth() + 1)).slice(-2) + '-' + ('0' + exam_date.getDate()).slice(-2);
 
             time_input.value = addZero(exam_date.getHours()) + ':' + addZero(exam_date.getMinutes());
 

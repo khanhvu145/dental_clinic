@@ -27,7 +27,10 @@ class PatientController{
                     });
                 });               
             })
-            .catch(next);    
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[GET]: /patient/details/:id/
@@ -42,7 +45,10 @@ class PatientController{
                     wards: wards.data,
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[GET]: /patient/create
@@ -62,7 +68,10 @@ class PatientController{
                     },
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[POST]: /employee/store
@@ -99,7 +108,10 @@ class PatientController{
                 };
                 res.redirect('/administration/patient');
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Thêm thông tin thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[GET]: /patient/edit
@@ -114,7 +126,10 @@ class PatientController{
                     wards: wards.data,
                 });
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Truy cập trang web thất bại.Lỗi rồi!!');
+                next();
+            });
     }
 
     //[PUT]: /employee/edit/update/:id/
@@ -158,7 +173,10 @@ class PatientController{
                     };
                     res.redirect('/administration/patient')
                 })
-                .catch(next);
+                .catch(() => {
+                    res.status(500).send('Cập nhật thông tin thất bại.Lỗi rồi!!');
+                    next();
+                }); 
         })
     }
 
@@ -172,7 +190,10 @@ class PatientController{
                 };
                 res.redirect('back')
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Yêu cầu xóa thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[DELETE]: /patient/destroy/:id/
@@ -185,7 +206,10 @@ class PatientController{
                 };
                 res.redirect('back');
             })
-            .catch(next);
+            .catch(() => {
+                res.status(500).send('Yêu cầu xóa thất bại.Lỗi rồi!!');
+                next();
+            }); 
     }
 
     //[GET]: /patient/search
