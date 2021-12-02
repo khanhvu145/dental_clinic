@@ -351,19 +351,21 @@
                     </div>
                     <div class="detail_appointment-item flex-column">
                         <label for="dentist">Nha sĩ phụ trách:</label>
+                        <input type="text" id="dentistSearch_home-value" name="dentist_id" style="display: none;">
                         <select id="dentist" name="dentist" required>
                             <option value="">-- Chọn nha sĩ --</option>
                             <% dentists.forEach(function(dentist, index){%>
-                                <option value="<%= dentist._id %>" >Bs <%= dentist.fullname %></option>
+                                <option value="<%= dentist.fullname %>" >Bs <%= dentist.fullname %></option>
                             <%})%>
                         </select>
                     </div>
                     <div class="detail_appointment-item flex-column">
                     <label for="service">Điều trị:</label>
+                    <input type="text" id="serviceSearch_home-value" name="service_id" style="display: none;">
                     <select id="service" name="service" required>
                             <option value="">-- Chọn dịch vụ --</option>
                             <% services.forEach(function(service, index){%>
-                                <option value="<%= service._id %>"><%= service.name %></option>
+                                <option value="<%= service.name %>"><%= service.name %></option>
                             <%})%>
                         </select>
                     </div>
@@ -409,14 +411,33 @@
                         <textarea name="note" id="note" rows="3">${appointment_info.note}</textarea>
                     </div>
                 `
-                document.querySelectorAll('#dentist option').forEach(function(x){
-                    if(x.value == dentist_info._id) x.selected = true;
+                dentistList.forEach(function(x, index){
+                    if(x._id == dentist_info._id){
+                        $('#dentist').prop('selectedIndex', index + 1).change();
+                        document.getElementById('dentistSearch_home-value').value = dentistList[index]._id;
+                    }
+                })
+                serviceList.forEach(function(x, index){
+                    if(x._id == service_info._id){
+                        $('#service').prop('selectedIndex', index + 1).change();
+                        document.getElementById('serviceSearch_home-value').value = serviceList[index]._id;
+                    }
+                })
+                $('#dentist').on('change', function (e) {
+                    var index = $("#dentist").prop('selectedIndex');
+                    document.getElementById('dentistSearch_home-value').value = dentistList[index - 1]._id;
                 });
-                document.querySelectorAll('#service option').forEach(function(x){
-                    if(x.value == service_info._id) x.selected = true;
+
+                $('#dentist').on('select2:clear', function (e) {
+                    document.querySelector('#dentistSearch_home-value').value = '';
                 });
-                document.querySelectorAll('#period option').forEach(function(x){
-                    if(x.value == appointment_info.period) x.selected = true;
+                $('#service').on('change', function (e) {
+                    var index = $("#service").prop('selectedIndex');
+                    document.getElementById('serviceSearch_home-value').value = serviceList[index - 1]._id;
+                });
+
+                $('#service').on('select2:clear', function (e) {
+                    document.querySelector('#serviceSearch_home-value').value = '';
                 });
             }
         })

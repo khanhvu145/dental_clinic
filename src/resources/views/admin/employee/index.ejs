@@ -10,7 +10,7 @@
             </a> 
         </div>
     </div>
-    <form method="POST" action="/administration/employee/delete" class="deleteFormChoose">
+    <form method="POST" action="/administration/employee/deleteMany?_method=DELETE" class="deleteFormChoose">
         <div class="admin__main-table">
             <table>
                 <thead>
@@ -137,7 +137,7 @@
         modal.style.display = 'none';
     }
     btnYes.onclick = function(){
-        deleteForm.setAttribute('action', '/administration/employee/destroy/' + ID + '?_method=DELETE')
+        deleteForm.setAttribute('action', '/administration/employee/delete/' + ID + '?_method=DELETE')
         deleteForm.submit();
     }
     btnYesChoose.onclick = function(){

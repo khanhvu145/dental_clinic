@@ -66,7 +66,7 @@ class AppointmentController{
         var appointment_date = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
         var time_start = moment(appointment_date + 'T' + req.body.time);
         var time_end = moment(appointment_date + 'T' + addTimes(req.body.time, req.body.period));
-        Appointment.find({_id: {$ne: req.params.id}, dentist_id: req.body.dentist, date: req.body.date}, function(err, appointments){
+        Appointment.find({_id: {$ne: req.params.id}, dentist_id: req.body.dentist_id, date: req.body.date}, function(err, appointments){
             let dem = 0;
             for(let i = 0; i < appointments.length; i++){
                 var date_db = new Date(appointments[i].date);
@@ -93,8 +93,8 @@ class AppointmentController{
                         { 
                             $set: { 
                                 status: req.body.status,
-                                dentist_id: req.body.dentist, 
-                                service_id: req.body.service,  
+                                dentist_id: req.body.dentist_id, 
+                                service_id: req.body.service_id,  
                                 date: req.body.date,
                                 time: req.body.time,
                                 period: req.body.period, 

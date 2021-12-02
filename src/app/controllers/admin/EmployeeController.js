@@ -1,4 +1,5 @@
 const Employee = require('../../models/Employee');
+const Appointment = require('../../models/Appointment');
 const Role = require('../../models/Role');
 const axios = require('axios');
 const fs = require('fs');
@@ -233,8 +234,8 @@ class EmployeeController{
     }
 
     //[GET]: /employee/delete
-    delete(req, res, next) {
-        Employee.deleteMany({ _id: {$in: req.body.Ids}})
+    deleteMany(req, res, next) {
+        Promise.all([Employee.delete({ _id: {$in: req.body.Ids}}), Appointment.delete({ dentist_id: {$in: req.body.Ids}})])
             .then(() => {
                 req.session.message = {
                     type: 'success',
@@ -249,8 +250,8 @@ class EmployeeController{
     }
 
     //[DELETE]: /employee/destroy/:id/
-    destroy(req, res, next) {
-        Employee.deleteOne({ _id: req.params.id})
+    delete(req, res, next) {
+        Promise.all([Employee.delete({ _id: req.params.id}), Appointment.delete({ dentist_id: req.params.id})])
             .then(() => {
                 req.session.message = {
                     type: 'success',

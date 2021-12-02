@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
-// const slug = require('mongoose-slug-generator');
-// const mongooseDelete = require('mongoose-delete');
-// const AutoIncrement = require('mongoose-sequence')(mongoose);
-
+const mongooseDelete = require('mongoose-delete');
 const Schema = mongoose.Schema;
 
 const Employee = new Schema(
@@ -50,14 +47,9 @@ const Employee = new Schema(
     },
 );
 
-//Add plugins
-// mongoose.plugin(slug);
-
-// Course.plugin(AutoIncrement);
-
-// Course.plugin(mongooseDelete, { 
-//     overrideMethods: 'all',
-//     deletedAt : true, 
-// });
+Employee.plugin(mongooseDelete, { 
+    overrideMethods: 'all',
+    deletedAt : true, 
+});
 
 module.exports = mongoose.model('Employee', Employee);

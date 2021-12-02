@@ -4,8 +4,8 @@ const patientController = require('../../app/controllers/admin/PatientController
 const store = require('../../app/middlewares/Multer');
 const authAdministration = require('../../app/middlewares/AuthAdministration');
 
-router.delete('/destroy/:id/', authAdministration, patientController.destroy);
-router.post('/delete', authAdministration, patientController.delete);
+router.delete('/delete/:id/', authAdministration, patientController.delete);
+router.delete('/deleteMany', authAdministration, patientController.deleteMany);
 router.put('/edit/update/:id/', authAdministration, store.single('image'), patientController.update);
 router.get('/edit/:id/', authAdministration, patientController.edit);
 router.post('/store', authAdministration, store.single('image'), patientController.store);

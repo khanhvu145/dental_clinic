@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseDelete = require('mongoose-delete');
 const Schema = mongoose.Schema;
 
 const Appointment = new Schema(
@@ -45,5 +46,10 @@ const Appointment = new Schema(
         timestamps: true,
     },
 );
+
+Appointment.plugin(mongooseDelete, { 
+    overrideMethods: 'all',
+    deletedAt : true, 
+});
 
 module.exports = mongoose.model('Appointment', Appointment);

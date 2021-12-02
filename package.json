@@ -32,12 +32,12 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.1",
-    "express-fileupload": "^1.2.1",
     "express-session": "^1.17.2",
     "fullcalendar": "^5.10.1",
     "method-override": "^3.0.0",
     "moment": "^2.29.1",
     "mongoose": "^5.13.7",
+    "mongoose-delete": "^0.5.4",
     "multer": "^1.4.3"
   },
   "devDependencies": {

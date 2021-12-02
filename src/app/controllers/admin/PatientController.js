@@ -1,4 +1,5 @@
 const Patient = require('../../models/Patient');
+const Appointment = require('../../models/Appointment');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
@@ -181,8 +182,8 @@ class PatientController{
     }
 
     //[GET]: /patient/delete
-    delete(req, res, next) {
-        Patient.deleteMany({ _id: {$in: req.body.Ids}})
+    deleteMany(req, res, next) {
+        Promise.all([Patient.delete({ _id: {$in: req.body.Ids}}), Appointment.delete({ patient_id: {$in: req.body.Ids}})])
             .then(() => {
                 req.session.message = {
                     type: 'success',
@@ -197,8 +198,8 @@ class PatientController{
     }
 
     //[DELETE]: /patient/destroy/:id/
-    destroy(req, res, next) {
-        Patient.deleteOne({ _id: req.params.id})
+    delete(req, res, next) {
+        Promise.all([Patient.delete({ _id: req.params.id}), Appointment.delete({ patient_id: req.params.id})])
             .then(() => {
                 req.session.message = {
                     type: 'success',

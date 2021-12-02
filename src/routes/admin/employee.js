@@ -4,8 +4,8 @@ const employeeController = require('../../app/controllers/admin/EmployeeControll
 const store = require('../../app/middlewares/Multer');
 const authAdministration = require('../../app/middlewares/AuthAdministration');
 
-router.delete('/destroy/:id/', authAdministration, employeeController.destroy);
-router.post('/delete', authAdministration, employeeController.delete);
+router.delete('/delete/:id/', authAdministration, employeeController.delete);
+router.delete('/deleteMany', authAdministration, employeeController.deleteMany);
 router.put('/edit/update/:id/', authAdministration, store.single('image'), employeeController.update);
 router.get('/edit/:id/', authAdministration, employeeController.edit);
 router.post('/store', authAdministration, store.single('image'), employeeController.store);
