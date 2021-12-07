@@ -206,7 +206,7 @@
             }
         })
         renderAppointment(appointments);
-        appointment_handle();
+        appointment_handle(appointments, patientList, dentistList, serviceList);
     });
 
     $('#patientSearch_home').on('select2:clear', function (e) {
@@ -223,7 +223,7 @@
         else{
             renderAppointment(appointmentList);
         }
-        appointment_handle();
+        appointment_handle(appointmentList, patientList, dentistList, serviceList);
     });
 
     $('#dentistSearch_home').on('change', function (e) {
@@ -243,7 +243,7 @@
             }
         })
         renderAppointment(appointments);
-        appointment_handle();
+        appointment_handle(appointments, patientList, dentistList, serviceList);
     });
 
     $('#dentistSearch_home').on('select2:clear', function (e) {
@@ -260,12 +260,12 @@
         else{
             renderAppointment(appointmentList);
         }
-        appointment_handle();
+        appointment_handle(appointmentList, patientList, dentistList, serviceList);
     });
     
 
     //Xử lý các chức năng
-    function appointment_handle(){
+    function appointment_handle(appointmentList, patientList, dentistList, serviceList){
         const edit_appointment_btn = document.querySelectorAll('.appointment__content-edit');
         const appointment_modal = document.querySelector('.detail_appointment-modal');
         const content = document.querySelector('.detail_appointment-content');
@@ -475,6 +475,6 @@
         })
     }
 
-    appointment_handle();
+    appointment_handle(appointmentList, patientList, dentistList, serviceList);
  
 </script>
