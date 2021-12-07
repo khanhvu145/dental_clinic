@@ -92,7 +92,6 @@ class AppointmentController{
                         { _id: req.params.id }, 
                         { 
                             $set: { 
-                                status: req.body.status,
                                 dentist_id: req.body.dentist_id, 
                                 service_id: req.body.service_id,  
                                 date: req.body.date,

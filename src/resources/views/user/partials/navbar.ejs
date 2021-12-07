@@ -15,14 +15,18 @@
     <div class="navbar-nav nav-right">
         <% if (_session.roleName == 'admin') { %>
             <a href="/administration">
-                <p class="navbar__name">Bs <%= _session.user.fullname %></p>
+                <p class="navbar__name">Admin <%= _session.user.fullname %></p>
                 <div class="navbar__img">
                     <img src="<%= _session.user.image %>" alt="">
                 </div>
             </a>
         <%} else { %>
             <a href="/myaccount">
-                <p class="navbar__name">Bs <%= _session.user.fullname %></p>
+                <% if (_session.roleName == 'Nha sĩ') { %>
+                    <p class="navbar__name">BS <%= _session.user.fullname %></p>
+                <%} else { %>
+                    <p class="navbar__name">LT <%= _session.user.fullname %></p>
+                <% } %>   
                 <div class="navbar__img">
                     <img src="<%= _session.user.image %>" alt="">
                 </div>
