@@ -7,9 +7,14 @@ const { mongooseToObject } = require('../../../util/mongoose');
 class LoginController{
     //[GET]
     show(req, res, next) {
-        res.render('auth/login', {
-            layout: './auth/layouts'
-        });
+        if (req.session && req.session.isLogin) {
+            res.redirect('/');
+        }
+        else{
+            res.render('auth/login', {
+                layout: './auth/layouts'
+            });
+        }
     }
 
     //[POST]
