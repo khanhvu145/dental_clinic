@@ -219,11 +219,12 @@
                 }
             })
             renderAppointment(appointments);
+            appointment_handle(appointments, patientList, dentistList, serviceList);
         }
         else{
             renderAppointment(appointmentList);
+            appointment_handle(appointmentList, patientList, dentistList, serviceList);
         }
-        appointment_handle(appointmentList, patientList, dentistList, serviceList);
     });
 
     $('#dentistSearch_home').on('change', function (e) {
@@ -256,11 +257,12 @@
                 }
             })
             renderAppointment(appointments);
+            appointment_handle(appointments, patientList, dentistList, serviceList);
         }
         else{
             renderAppointment(appointmentList);
+            appointment_handle(appointmentList, patientList, dentistList, serviceList);
         }
-        appointment_handle(appointmentList, patientList, dentistList, serviceList);
     });
     
 
