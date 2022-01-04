@@ -26,7 +26,7 @@ Cài đặt:
 
 *Cài đặt database
 
- - Bước 1: Tải/cài đặt mongodb compass
+ - Bước 1: Tải/cài đặt mongodb compass tại: https://www.mongodb.com/products/compass
 
  - Bước 2: Tải/giải nén các collections tại: https://drive.google.com/file/d/1TK9OoNYR5GZiibS2GMeeubaPPWo0cmdw/view?usp=sharing 
 
